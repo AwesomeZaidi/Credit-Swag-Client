@@ -7,7 +7,7 @@ import { HANDLE_LOGIN, HANDLE_SIGNUP, HANDLE_LOGOUT,
     HANDLE_ERROR, LOAD_DATA } from "../constants/action-types";
 import axios from "axios";
 
-const baseUrl = 'https://digitalmenu-intensive.herokuapp.com/';
+const baseUrl = 'http://localhost:5000/';
 
 export const loadData = (state) => {
     return {
@@ -18,11 +18,16 @@ export const loadData = (state) => {
 
 export function login(loginState) {
     return (dispatcher) => {
-        axios.post(`${baseUrl}users/v0/login`, loginState).then((res) => {
-            dispatcher(handleLogin(res.data.user)); // THUNKED IT!
-        }).catch((err) => {
+        try {
+            axios.post(`${baseUrl}login`, loginState).then((res) => {
+                dispatcher(handleLogin(res.data.user)); // THUNKED IT!
+            }).catch((err) => {
+                dispatcher(handleError(true));
+            });
+        } catch(err){
+            console.log(err);  
             dispatcher(handleError(true));
-        });
+        }
     };
 };
 
@@ -34,12 +39,16 @@ export const handleLogin = (user) => {
     };
 };
 
-export function signUp (signupState) {
+export function signUp(signupState) {
     return async (dispatcher) => {
-        const res = await axios.post(`${baseUrl}users/v0/signup`, signupState)
-        if (res.status === 200) {
-            dispatcher(handleSignup(res.data));
-        } else {
+        try {
+            const res = await axios.post(`${baseUrl}signup`, signupState)
+            if (res.status === 200) {
+                dispatcher(handleSignup(res.data));
+            } else {
+                dispatcher(handleError(true));
+            }
+        } catch (err) {
             dispatcher(handleError(true));
         }
     };
@@ -58,6 +67,7 @@ export const logout = () => {
     }
 };
 
+// connect the logout later.
 export const handleLogout = () => {
     return {
         type: HANDLE_LOGOUT,

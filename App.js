@@ -17,7 +17,6 @@ import SignUpScreen from './pages/AuthScreens/SignUp/'
 import SignInScreen from './pages/AuthScreens/SignIn/'
 import AuthLoadingScreen from './pages/AuthScreens/AuthLoading';
 
-
 const AppStack = createStackNavigator({
 		Home: HomeScreen,
 		Detail: DetailScreen
