@@ -40,9 +40,14 @@ export const handleLogin = (user) => {
 };
 
 export function signUp(signupState) {
+    console.log('signupState:', signupState);
+    console.log('in action');
     return async (dispatcher) => {
+        console.log('1');
         try {
-            const res = await axios.post(`${baseUrl}signup`, signupState)
+            console.log('2');
+            const res = await axios.post(`${baseUrl}signup`, signupState);
+            console.log('res:', res);
             if (res.status === 200) {
                 dispatcher(handleSignup(res.data));
             } else {

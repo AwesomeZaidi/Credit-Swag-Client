@@ -2,15 +2,24 @@
 // ----------------------------------------------------------------------------------
 // Imports
 // ----------------------------------------------------------------------------------
-import { View, Text, Button, ScrollView, TextInput } from 'react-native';
+import {
+    View,
+    Text,
+    Image,
+    ScrollView,
+    TextInput
+} from 'react-native';
 
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { signUp } from "../../../redux/actions/index";
+import { Button } from 'react-native-elements';
 
 import common from '../../styles/common.style';
 import styles from '../styles/forms.js';
 import { placeholder } from '../../styles/variables';
+
+import piggybank from '../../../assets/piggybank.png';
 
 // ----------------------------------------------------------------------------------
 // SignUp Component Class
@@ -28,7 +37,7 @@ class SignUp extends Component {
         emailFocused: false,
         usernameFocused: false,
         passwordFocused: false,
-        showError: false // doing this here so when app refresh happens, it goes away! :D
+        showError: false // doing this here so when app refresh happens, it goes away.
     };
 
     // ------------------------------------------
@@ -38,6 +47,9 @@ class SignUp extends Component {
     static navigationOptions = {
         title: 'Sign Up',
     };
+    // static navigationOptions = {
+    //     header: null,
+    // };
 
     // ------------------------------------------
     // Update state on text change
@@ -75,26 +87,28 @@ class SignUp extends Component {
     // signUp redux action handler function attached to props. 
     // --------------------------------------------------------
     handleSubmit = async () => {
-        try {
-            await this.props.signUp(this.state);
-            this.props.navigation.navigate('App');
-        } catch {
+        await this.props.signUp(this.state);
+        this.props.error ?
             this.setState({
                 showError: true
-            });
-        }
+            })
+        :
+            this.props.navigation.navigate('App');
     };
 
     render() {
-        console.log('this.state.showError:', this.state.showError);
-        
         return (
           <ScrollView
             style={styles.form}
             keyboardShouldPersistTaps='handled'
             contentContainerStyle={styles.wrapper}
           >
-            <Text style={styles.h1_primary}>Logo Here</Text>
+
+            <Text style={common.h1_primary}>Credit Swag</Text>
+            <Image
+                source={piggybank}
+                style={[common.sm_img, common.center]}
+            />
             <TextInput
                 onChangeText={(text) => this.onChangeText(text, 'email')}
                 value={this.state.email}
@@ -130,7 +144,8 @@ class SignUp extends Component {
             {this.state.showError ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
             <Button
                 title="Signup"
-                buttonStyle={styles.primary_btn}
+                titleStyle={common.labelText_primary}
+                buttonStyle={[common.btn_primary, common.center]}
                 onPress={this.handleSubmit}
             />
             <View style={common.centerVerticalElements}>

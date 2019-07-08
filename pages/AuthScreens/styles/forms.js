@@ -9,15 +9,6 @@ const styles = StyleSheet.create({
   form: {
     backgroundColor: bg
   },
-  // TEXT STYLES
-  h1_primary: {
-    marginTop: 30,
-    marginBottom: 30,
-    fontSize: 36,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: primary
-  },
   text_bold_read: {
     ...common.text_sm,
     fontWeight: 'bold',
