@@ -7,16 +7,17 @@ import { createRootNavigator,
 } from 'react-navigation';
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import axios from 'axios';
-axios.defaults.withCredentials = true  // enable axios post cookie, default false
+// import axios from 'axios';
+// axios.defaults.withCredentials = true  // enable axios post cookie, default false
 
 // ----------------------------------------------------------------------------------
 // Components Imports
 // ----------------------------------------------------------------------------------
 import HomeScreen from './pages/Home/'
 import DetailScreen from './pages/Detail/'
-import SignUpScreen from './pages/AuthScreens/SignUp/'
-import SignInScreen from './pages/AuthScreens/SignIn/'
+// import SignUpScreen from './pages/AuthScreens/SignUp/'
+// import SignInScreen from './pages/AuthScreens/SignIn/'
+import EnterScreen from  './pages/AuthScreens/Enter/';
 import AuthLoadingScreen from './pages/AuthScreens/AuthLoading';
 
 const AppStack = createStackNavigator({
@@ -25,8 +26,7 @@ const AppStack = createStackNavigator({
 });
 
 const AuthStack = createStackNavigator({ 
-	SignUp: SignUpScreen,
-	SignIn: SignInScreen
+	Enter: EnterScreen
 });
 
 const MainNavigator = createAppContainer(createSwitchNavigator(
