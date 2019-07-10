@@ -88,7 +88,9 @@ class SignUp extends Component {
     // --------------------------------------------------------
     handleSubmit = async () => {
         await this.props.signUp(this.state);
-        this.props.error ?
+        console.log(this.props.error);
+        
+        this.props.error === true ?
             this.setState({
                 showError: true
             })
@@ -141,7 +143,7 @@ class SignUp extends Component {
                 autoCapitalize = 'none'
                 secureTextEntry={true}
             />
-            {this.state.showError ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
+            {this.state.showError === true ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
             <Button
                 title="Signup"
                 titleStyle={common.labelText_primary}

@@ -21,7 +21,8 @@ function rootReducer(state = initialState, action) {
     case HANDLE_LOGIN:
       return {...state, user: action.payload}
     case HANDLE_SIGNUP:
-      return {...state, user: action.payload}
+      console.log('action.payload:', action.payload);
+      return {...state, user: action.payload, error: false}
     case HANDLE_ERROR:
       return {...state, error: action.payload}
     case HANDLE_LOGOUT:

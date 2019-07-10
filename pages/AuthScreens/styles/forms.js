@@ -1,13 +1,38 @@
 import { StyleSheet } from 'react-native';
 import common from '../../styles/common.style';
 import {
-  bg, primary, secondary, danger, placeholder, light,
-  purple, third
+  bg, secondaryBg,
+  primary, secondary,
+  danger, placeholder,
+  light, purple,
+  third, text,
+  inputbg,
+  labelText,
+  inputText
 } from '../../styles/variables';
+import { Dimensions } from "react-native";
+
+let width = Dimensions.get('window').width; //full width
+// let height = Dimensions.get('window').height; //full height
 
 const styles = StyleSheet.create({
-  form: {
+  landingPage: {
+    paddingTop: 120,
     backgroundColor: bg
+  },
+  form: {
+    marginTop: 30,
+    marginBottom: 120,
+    backgroundColor: secondaryBg,
+    paddingTop: 20,
+    borderRadius: 20,
+    color: 'blue',
+    display: 'flex',
+    justifyContent:  'center',
+    alignItems: 'center',
+    width: '80%',
+    marginRight: 'auto',
+    marginLeft: 'auto'
   },
   text_bold_read: {
     ...common.text_sm,
@@ -16,7 +41,7 @@ const styles = StyleSheet.create({
   appTitle: {
     marginTop: 60,
     textAlign: 'center',
-    fontSize: 36,
+    fontSize: 28,
   },
   loginForm: {
     marginTop: 20,
@@ -34,29 +59,31 @@ const styles = StyleSheet.create({
   anotherStyle: {
     backgroundColor: 'black',
   },
+  input: {
+    width: '90%',
+    fontSize: 16,
+    padding: 14,
+    marginTop: 12,
+    marginBottom: 12,
+    marginLeft: 12,
+    marginRight: 12,
+    borderRadius: 30,
+    borderWidth: 2,
+    paddingLeft: 25,
+    color: inputText,
+  },
   inputFieldBlur: {
     fontSize: 16,
-    backgroundColor: bg,
-    padding: 18,
-    marginTop: 6,
-    marginBottom: 6,
-    marginLeft: 12,
-    marginRight: 12,
+    backgroundColor: inputbg,
     borderColor: third,
-    borderRadius: 20,
-    borderWidth: 2
   },
   inputFieldFocus: {
-    fontSize: 16,
-    backgroundColor: third,
-    padding: 18,
-    marginTop: 6,
-    marginBottom: 6,
-    marginLeft: 12,
-    marginRight: 12,
+    backgroundColor: inputbg,
     borderColor: primary,
-    borderRadius: 20,
-    borderWidth: 2
+  },
+  enterBtn: {
+    backgroundColor: primary,
+    color: text,
   },
   helperText: {
     marginLeft: 36,
