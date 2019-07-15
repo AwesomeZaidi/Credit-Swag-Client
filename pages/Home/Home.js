@@ -5,80 +5,54 @@
 import React, { Component } from 'react';
 import {
     Text,
-    StyleSheet,
     ScrollView,
     Button,
-    AsyncStorage,
-    ActivityIndicator,
-    FlatList,
 } from 'react-native';
 
-import { logout } from '../../redux/actions/index';
-import Card from '../Shared/Card';
+import PlaidAuthenticator from 'react-native-plaid-link';
+import { logOut, connectBank } from '../../redux/actions/index';
 import common from '../styles/common.style';
 
 import { connect } from "react-redux";
 
-class Home extends Component {
-
-    // ------------------------------------------
-    // State
-    // ------------------------------------------
-    
-    state = {
-        pokemonList: [],
-        loading: true
-    };
+class Dashboard extends Component {
 
     // ------------------------------------------
     // Navigation Options: title
     // ------------------------------------------
-    
-    static navigationOptions = {
-		title: 'Home Page'
-    };
-
-    async componentDidMount() {
-        try {
-            //Assign the promise unresolved first then get the data using the json method. 
-            const pokemonApiCall = await fetch('https://pokeapi.co/api/v2/pokemon/');
-            const pokemon = await pokemonApiCall.json();
-            this.setState({pokemonList: pokemon.results, loading: false});
-        } catch(err) {
-            console.log("Error fetching data-----------", err);
-        }
+    state = {
+        data: undefined
     }
 
+    static navigationOptions = {
+		title: 'Dashboard'
+    };
+
     logOut = async () => {
-        await this.props.logout();
+        await this.props.logOut();
         this.props.navigation.navigate('Auth');
     };
     
-    render() {      
-        const { pokemonList, loading } = this.state;
+    render() {
+        console.log('data:', this.state.data);
+        
         const { navigation } = this.props;
         return (
-            <ScrollView>
-                <Text style={common.text_sm}>Welcome your Dashboard</Text>
-                <Button onPress={this.logOut} title='Log Out'></Button>
-                {!loading ?
-                    <FlatList 
-                    data={pokemonList}
-                    renderItem={(data) => <Card {...data.item} navigation={navigation} />}
-                    keyExtractor={(item) => item.name}
-                    />
-                : <ActivityIndicator />}
-                
-                <Button title="Show me more of the app" onPress={this._showMoreApp} />
-            </ScrollView>
+                <PlaidAuthenticator
+                    onMessage={this.onMessage}
+                    publicKey="d5df4201427a1cbec5de25ade9bf41"
+                    env="sandbox"
+                    product="auth,transactions"
+                    clientName="Asim Zaidi"
+                    selectAccount={false}
+                />
         )
     }
 
-    _showMoreApp = () => {
-        this.props.navigation.navigate('Detail');
-    };
-}
-
+    onMessage = (data) => {
+        this.setState({data})
+    }
+} 
 
 const mapStateToProps = state => {
     return {
@@ -88,8 +62,9 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps() {
     return {
-        logout
+        logOut,
+        connectBank
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps())(Home);
+export default connect(mapStateToProps, mapDispatchToProps())(Dashboard);

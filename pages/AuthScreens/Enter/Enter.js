@@ -7,12 +7,13 @@ import {
     Text,
     Image,
     ScrollView,
-    TextInput
+    TextInput,
+    TouchableOpacity
 } from 'react-native';
 
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { signUp } from "../../../redux/actions/index";
+import { signUp, logIn } from "../../../redux/actions/index";
 import { Button } from 'react-native-elements';
 
 import common from '../../styles/common.style';
@@ -20,7 +21,7 @@ import styles from '../styles/forms.js';
 import { placeholder } from '../../styles/variables';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCoffee, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 // ----------------------------------------------------------------------------------
 // Enter Component Class
@@ -89,8 +90,8 @@ class Enter extends Component {
     // --------------------------------------------------------
     // signUp redux action handler function attached to props. 
     // --------------------------------------------------------
-    handleSubmit = async () => {
-        await this.props.signUp(this.state);
+    handleSubmit = async (type) => {
+        type === 'signup' ? await this.props.signUp(this.state) : await this.props.logIn(this.state)
         !this.props.error === true ?
             this.props.navigation.navigate('App')
         :
@@ -184,14 +185,13 @@ class Enter extends Component {
                                         secureTextEntry={true}
                                     />
                                     {this.state.showError === true ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
-                                    <View style={common.iconBtn}>
+                                    <TouchableOpacity style={common.iconBtn} onPress={() => this.handleSubmit('signup')}>
                                         <FontAwesomeIcon
                                             style={common.icon}
                                             size={24}
                                             icon={ faArrowRight } 
-                                            onPress={this.handleSubmit}
                                         />
-                                    </View>
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={[common.centerVerticalElements, common.mw]}>
                                     <Text style={[common.text_sm, common.graytxt]}>
@@ -203,12 +203,12 @@ class Enter extends Component {
                         <>
                         <View style={styles.form}>
                             <TextInput
-                                onChangeText={(text) => this.onChangeText(text, 'username')}
-                                value={this.state.username}
-                                style={this.state.usernameFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
-                                onFocus={ () => this.onFocus('usernameFocused') }
-                                onBlur={ () => this.onBlur('username', 'usernameFocused') }
-                                placeholder='Username'
+                                onChangeText={(text) => this.onChangeText(text, 'email')}
+                                value={this.state.email}
+                                style={this.state.emailFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
+                                onFocus={ () => this.onFocus('emailFocused') }
+                                onBlur={ () => this.onBlur('email', 'emailFocused') }
+                                placeholder='Email'
                                 autoCapitalize='none'
                                 placeholderTextColor={placeholder}
                             />
@@ -224,14 +224,13 @@ class Enter extends Component {
                                 secureTextEntry={true}
                             />
                             {this.state.showError === true ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
-                            <View style={common.iconBtn}>
+                            <TouchableOpacity style={common.iconBtn} onPress={() => this.handleSubmit('login')}>
                                 <FontAwesomeIcon
                                     style={common.icon}
                                     size={24}
-                                    icon={ faArrowRight } 
-                                    onPress={this.handleSubmit}
+                                    icon={ faArrowRight }
                                 />
-                            </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={[common.centerVerticalElements, common.mw]}>
                             <Text style={[common.text_sm, common.graytxt]}>
@@ -255,7 +254,8 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps() {
     return {
-        signUp
+        signUp,
+        logIn
     };
 };
 
