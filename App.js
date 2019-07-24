@@ -13,27 +13,47 @@ import store from "./redux/store";
 // ----------------------------------------------------------------------------------
 // Components Imports
 // ----------------------------------------------------------------------------------
-import HomeScreen from './pages/Home/'
-import DetailScreen from './pages/Detail/'
-// import SignUpScreen from './pages/AuthScreens/SignUp/'
-// import SignInScreen from './pages/AuthScreens/SignIn/'
+import ConnectScreen from './pages/Connect/';
+import DashboardScreen from './pages/Dashboard/';
 import EnterScreen from  './pages/AuthScreens/Enter/';
 import AuthLoadingScreen from './pages/AuthScreens/AuthLoading';
 
-const AppStack = createStackNavigator({
-		Home: HomeScreen,
-		Detail: DetailScreen
-});
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+
+// createMaterialBottomTabNavigator(
+// 	// RouteConfigs,
+// 	MaterialBottomTabNavigatorConfig
+//   );
 
 const AuthStack = createStackNavigator({ 
 	Enter: EnterScreen
 });
+
+const ConnectStack = createStackNavigator({ 
+	Connect: ConnectScreen,
+});
+
+const AppStack = createStackNavigator({
+	Tabs: createMaterialBottomTabNavigator({
+		Dashboard: { screen: DashboardScreen },
+		Settings: { screen: DashboardScreen }, // how to create like a page list here
+	  }, {
+		initialRouteName: 'Dashboard',
+		activeColor: '#f0edf6',
+		inactiveColor: '#3e2465',
+		barStyle: { backgroundColor: '#694fad' },
+	  }),
+	// Dashboard: DashboardScreen,
+	// Profile: DashboardScreen,
+});
+
 
 const MainNavigator = createAppContainer(createSwitchNavigator(
 	{
 		AuthLoading: AuthLoadingScreen,
 		App: AppStack,
 		Auth: AuthStack,
+		Connect: ConnectStack
 	},
 	{
 		initialRouteName: 'AuthLoading',

@@ -3,6 +3,7 @@ const primary = '#7C62E7'; // pink
 const secondary = '#7F61E6'; // purple
 const secondaryBg = '#393948' // lightter purple gray
 const danger = '#fa4359'; // smooth red
+const green = '#429321'; // smooth red
 const placeholder = '#757575'; // med grey
 const light = '#f4f4f4'; // light grey
 const purple = '#6400e4';
@@ -17,6 +18,7 @@ export {
     bg,
     secondaryBg,
     primary,
+    green,
     secondary,
     danger,
     placeholder, 

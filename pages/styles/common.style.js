@@ -14,6 +14,11 @@ import {
   } from './variables';
 
 export default StyleSheet.create({
+
+    page: {
+        paddingTop: '18%',
+        backgroundColor: bg,
+    },
     centerVerticalElements: {
         // textAlign: 'center'
         display: 'flex',
@@ -33,7 +38,6 @@ export default StyleSheet.create({
     // ------------------------------------------
     // SHARED CLASSES
     // ------------------------------------------
-
     center: {
         marginRight: 'auto',
         marginLeft: 'auto',
@@ -80,12 +84,9 @@ export default StyleSheet.create({
     },
 
     h1_primary: {
-        marginTop: 30,
-        marginBottom: 30,
         fontSize: 28,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: primary
+        // textAlign: 'center',
+        color: text
     },
 
     labelText_primary: {

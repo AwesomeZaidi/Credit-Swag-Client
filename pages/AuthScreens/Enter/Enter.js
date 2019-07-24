@@ -13,9 +13,7 @@ import {
 
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { signUp, logIn } from "../../../redux/actions/index";
-import { Button } from 'react-native-elements';
-
+import { signUp, logIn, logOut } from "../../../redux/actions/index";
 import common from '../../styles/common.style';
 import styles from '../styles/forms.js';
 import { placeholder } from '../../styles/variables';
@@ -56,6 +54,12 @@ class Enter extends Component {
         header: null,
     };
 
+    componentDidMount() {
+        if (this.props.user) {
+            return this.props.navigation.navigate('App')
+        }
+    }
+
     // ------------------------------------------
     // Update state on text change
     // ------------------------------------------
@@ -91,13 +95,25 @@ class Enter extends Component {
     // signUp redux action handler function attached to props. 
     // --------------------------------------------------------
     handleSubmit = async (type) => {
-        type === 'signup' ? await this.props.signUp(this.state) : await this.props.logIn(this.state)
-        !this.props.error === true ?
-            this.props.navigation.navigate('App')
-        :
-            this.setState({
-                showError: true
-            })
+        if (type === 'signup') {
+            await this.props.signUp(this.state)
+            !this.props.error === true
+                ?
+                    this.props.navigation.navigate('Connect')
+                :
+                    this.setState({
+                        showError: true
+                    })
+        } else if (type === 'signup') {
+            await this.props.logIn(this.state)
+            !this.props.error === true
+                ?
+                    this.props.navigation.navigate('App')
+                :
+                    this.setState({
+                        showError: true
+                    })
+        }
     };
 
     // On Signup or Login Tab button presses, update state to
@@ -119,10 +135,11 @@ class Enter extends Component {
     render() {
         return (
             <ScrollView
-                style={styles.landingPage}
+                style={common.page}
                 keyboardShouldPersistTaps='handled'
                 contentContainerStyle={styles.wrapper}
             >
+            {/* This View allows the user to toggle the login and logout tabs to show different forms. */}
                 <View style={common.centerVerticalElements}>
                     <Text
                         onPress={() =>this.changeFormView('loginPressed')}                        
@@ -137,9 +154,9 @@ class Enter extends Component {
                         Signup
                     </Text>
                 </View>
-
                     {
                         (this.state.signupShow === true) ?
+                            // Shows the signup form or login form based on the state that gets updated above or set by default.
                             <>
                                 <View style={styles.form}>
                                     <TextInput
@@ -255,7 +272,8 @@ const mapStateToProps = state => {
 function mapDispatchToProps() {
     return {
         signUp,
-        logIn
+        logIn,
+        logOut
     };
 };
 

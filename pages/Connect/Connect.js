@@ -11,46 +11,53 @@ import {
 
 import PlaidAuthenticator from 'react-native-plaid-link';
 import { logOut, connectBank } from '../../redux/actions/index';
-import common from '../styles/common.style';
+// import common from '../styles/common.style';
 
 import { connect } from "react-redux";
 
-class Dashboard extends Component {
+class Connect extends Component {
 
     // ------------------------------------------
     // Navigation Options: title
     // ------------------------------------------
-    state = {
-        data: undefined
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            public_token: undefined,
+        }
     }
 
     static navigationOptions = {
-		title: 'Dashboard'
+		title: 'Connect Bank'
     };
 
     logOut = async () => {
-        await this.props.logOut();
+        this.props.logOut();
         this.props.navigation.navigate('Auth');
     };
     
     render() {
-        console.log('data:', this.state.data);
-        
-        const { navigation } = this.props;
         return (
+            <>
+                <Text onPress={this.logOut}>LOGOUT</Text>
                 <PlaidAuthenticator
                     onMessage={this.onMessage}
-                    publicKey="d5df4201427a1cbec5de25ade9bf41"
+                    publicKey="e7325291c9f6c0bdb72a3829865923"
                     env="sandbox"
                     product="auth,transactions"
-                    clientName="Asim Zaidi"
+                    clientName="Credit Swag"
                     selectAccount={false}
                 />
+            </>
         )
     }
 
-    onMessage = (data) => {
-        this.setState({data})
+    onMessage = async (data) => {    
+        if (data && data.metadata && 'public_token' in data.metadata) {
+            await this.props.connectBank(this.props.user._id, data.metadata.public_token);
+            this.props.navigation.navigate('App');
+        }
     }
 } 
 
@@ -63,8 +70,8 @@ const mapStateToProps = state => {
 function mapDispatchToProps() {
     return {
         logOut,
-        connectBank
+        connectBank,
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps())(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps())(Connect);

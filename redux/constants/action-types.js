@@ -1,11 +1,12 @@
 // export const GET_ERRORS = "GET_ERRORS";
 // export const USER_LOADING = "USER_LOADING";
 // export const SET_CURRENT_USER = "SET_CURRENT_USER";
-export const HANDLE_LOGIN = "HANDLE_LOGIN";
-export const HANDLE_SIGNUP = "HANDLE_SIGNUP";
-export const HANDLE_LOGOUT = "HANDLE_LOGOUT";
+export const HANDLE_LOGIN = 'HANDLE_LOGIN';
+export const HANDLE_SIGNUP = 'HANDLE_SIGNUP';
+export const HANDLE_LOGOUT = 'HANDLE_LOGOUT';
 
-export const CONNECT_BANK = "CONNECT_BANK";
+export const CONNECT_BANK = 'CONNECT_BANK';
+export const GET_BALANCE_AND_TRANSACTIONS = 'GET_BALANCE_AND_TRANSACTIONS';
 
-export const HANDLE_ERROR = "HANDLE_ERROR";
-export const LOAD_DATA = "SAVE_DATA";
+export const HANDLE_ERROR = 'HANDLE_ERROR';
+export const LOAD_DATA = 'SAVE_DATA';
