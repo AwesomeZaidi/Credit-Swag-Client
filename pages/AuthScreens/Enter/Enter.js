@@ -104,7 +104,7 @@ class Enter extends Component {
                     this.setState({
                         showError: true
                     })
-        } else if (type === 'signup') {
+        } else if (type === 'login') {
             await this.props.logIn(this.state)
             !this.props.error === true
                 ?
