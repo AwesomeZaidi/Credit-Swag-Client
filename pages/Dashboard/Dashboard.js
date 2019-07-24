@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import {
     Text,
     ScrollView,
+    FlatList,
     View
 } from 'react-native';
 import { logOut, connectBank } from '../../redux/actions/index';
@@ -40,6 +41,19 @@ class Dashboard extends Component {
         header: null,
     };
 
+    getIcon = (category) => {
+        switch(category) {
+            case('Payment'):
+                return <Text style={{fontSize: 26}}>💰</Text>
+            case('Travel'):
+                return <Text style={{fontSize: 26}}>🗺</Text>
+            case('Food and Drink'):
+                return <Text style={{fontSize: 26}}>🍕</Text>
+            default:
+                return <Text style={{fontSize: 26}}>🤷‍</Text>
+        }
+    }
+
     render() {
         
         return (
@@ -51,6 +65,10 @@ class Dashboard extends Component {
                     <Text style={styles.balanceText}>${this.props.user.currentBalance}</Text>
                 </View>
 
+               {/* <View style={styles.top}>
+                    <Text style={common.h1_primary}>Upcoming</Text>
+                </View> */}
+
                 <View style={styles.top}>
                     <Text style={common.h1_primary}>Past</Text>
                     {/* <View style={styles.past}> */}
@@ -58,14 +76,17 @@ class Dashboard extends Component {
                         this.props.user.transactions.map((transaction, index) => {
                             return (
                                 <View key={index} style={styles.item}>
-                                    <LinearGradient
-                                        colors={['#C35EBF', '#9861D9', '#7662EA']}
-                                        style={{ padding: 15, alignItems: 'center', borderRadius: 10,marginRight: 10 }}>
-                                    </LinearGradient>
                                     <View style={styles.leftPast}>
-                                        
-                                        <Text style={styles.itemCat}>{transaction.category[0]}</Text>
-                                        <Text style={styles.itemDate}>{transaction.date}</Text>
+                                        <LinearGradient
+                                            
+                                            colors={['#C35EBF', '#9861D9', '#7662EA']}
+                                            style={{ padding: 4, alignItems: 'center', borderRadius: 10, marginRight: 12, justifyContent: 'center', alignSelf: 'center' }}>
+                                            {this.getIcon(transaction.category[0])}
+                                        </LinearGradient> 
+                                        <View>
+                                            <Text style={styles.itemCat}>{transaction.category[0]}</Text>
+                                            <Text style={styles.itemDate}>{transaction.date}</Text>
+                                        </View>
                                     </View>
                                     <Text style={ Math.sign(transaction.amount)  == '-1' ? styles.red : styles.green }>
                                         ${transaction.amount}

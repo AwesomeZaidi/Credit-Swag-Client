@@ -24,15 +24,15 @@ export default StyleSheet.create({
         backgroundColor: '#5a5a72',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        alignContent: 'center',
         marginTop: 10,
         paddingLeft: 10,
         paddingRight: 10,
         paddingTop: 6,
         paddingBottom: 6,
         borderRadius: 6,
-
     },
     itemCat: {
         color: text,
@@ -42,20 +42,17 @@ export default StyleSheet.create({
         color:  '#74747F',
         fontSize: 12,
     },
-    // leftPast: {
-    //     display: 'flex'
-    // },
+    leftPast: {
+        display: 'flex',
+        flexDirection:  'row'
+    },
     red: {
+        fontSize: 15,
         color: danger
     },
     green: {
+        fontSize: 18,
         color: green,
         right: 0
-    },
-    linearGradient: {
-        flex: 1,
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderRadius: 5
     },
 })
