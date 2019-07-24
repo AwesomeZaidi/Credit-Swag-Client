@@ -26,5 +26,14 @@
     "ios": {
       "supportsTablet": true
     }
+  },
+  "infoPlist": {
+    "NSAppTransportSecurity": {
+      "NSExceptionDomains": {
+        "localhost:5000": true,
+        "http://localhost:5000": true,
+        "http://127.0.0.1:5000/": true
+      }
+    }
   }
 }

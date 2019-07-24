@@ -13,13 +13,10 @@ import {
 import { Dimensions } from "react-native";
 
 let width = Dimensions.get('window').width; //full width
-// let height = Dimensions.get('window').height; //full height
+let height = Dimensions.get('window').height; //full height
+// console.log('HEIGHT:', height);
 
 const styles = StyleSheet.create({
-  landingPage: {
-    paddingTop: 120,
-    backgroundColor: bg
-  },
   form: {
     marginTop: 30,
     marginBottom: 120,

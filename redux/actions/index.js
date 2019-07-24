@@ -1,65 +1,98 @@
+/* eslint-disable no-use-before-define */
 // src/js/actions/index.js
 
 // ----------------------------------------------------------------------------------
 // Imports
 // ----------------------------------------------------------------------------------
-import { HANDLE_LOGIN, HANDLE_SIGNUP, HANDLE_LOGOUT,
-    HANDLE_ERROR, LOAD_DATA } from "../constants/action-types";
-import axios from "axios";
+import axios from 'axios';
+import {
+  HANDLE_LOGIN, HANDLE_SIGNUP,
+  HANDLE_LOGOUT,
+  CONNECT_BANK,
+  GET_BALANCE_AND_TRANSACTIONS,
+  HANDLE_ERROR, LOAD_DATA,
+} from '../constants/action-types';
 
-const baseUrl = 'http://localhost:5000/';
+// const baseUrl = 'https://creditswagapi.herokuapp.com/';
+const baseUrl = 'https://437e1d58.ngrok.io/';
 
-export const loadData = (state) => {
-    return {
-        type: LOAD_DATA,
-        payload: state
-    };
+export const loadData = state => ({
+  type: LOAD_DATA,
+  payload: state,
+});
+
+export const connectBank = (userId, public_token) => async (dispatch) => {
+  await axios.post(`${baseUrl}get_access_token`, { public_token, userId });
+  dispatch({
+    type: CONNECT_BANK,
+    payload: public_token,
+  });
 };
 
-export function login(loginState) {
-    return (dispatcher) => {
-        try {
-            axios.post(`${baseUrl}login`, loginState).then((res) => {
-                dispatcher(handleLogin(res.data.user)); // THUNKED IT!
-            }).catch((err) => {
-                dispatcher(handleError(true));
-            });
-        } catch(err){
-            console.log(err);  
-            dispatcher(handleError(true));
-        }
-    };
+export const getTransactions = userId => async (dispatch) => {
+  const res = await axios.post(`${baseUrl}transactions`, { userId });
+  dispatch({
+    type: GET_BALANCE_AND_TRANSACTIONS,
+    payload: res.data.user,
+  });
 };
 
-export const handleLogin = (user) => {
-    return {
-        type: HANDLE_LOGIN,
-        payload: user,
-        payload_error: false
-    };
-};
-
-export const signUp = (signupState) => async dispatch => {
-    dispatch({type: HANDLE_SIGNUP, payload: signupState });
-}
-
-export const logout = () => {
-    return (dispatcher) => {
-        dispatcher(handleLogout());
+export function logIn(loginState) {
+  return (dispatcher) => {
+    try {
+      axios.post(`${baseUrl}login`, loginState).then((res) => {
+        dispatcher(handleLogin(res.data.user)); // THUNKED IT!
+      }).catch(() => {
+        dispatcher(handleError(true));
+      });
+    } catch (err) {
+      dispatcher(handleError(true));
     }
+  };
 };
 
-// connect the logout later.
-export const handleLogout = () => {
-    return {
-        type: HANDLE_LOGOUT,
-        payload: ""
-    };
+export const handleLogin = user => ({
+  type: HANDLE_LOGIN,
+  payload: user,
+  payload_error: false,
+});
+
+export function signUp(signupState) {
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Access-Control-Allow-Origin': '*',
+  };
+  return async (dispatcher) => {
+    try {
+      const res = await axios.post(`${baseUrl}signup`, signupState, { headers });
+      if (res.status === 200) {
+        dispatcher(handleSignup(res.data));
+      } else {
+        dispatcher(handleError(true));
+      }
+    } catch (err) {
+      dispatcher(handleError(true));
+    }
+  };
 };
 
-export const handleError = (error) => {
-    return {
-        type: HANDLE_ERROR,
-        payload: error
-    };
+export const handleSignup = user => ({
+  type: HANDLE_SIGNUP,
+  payload: user,
+});
+
+export const logOut = () => (dispatcher) => {
+  axios.delete(`${baseUrl}logout`).then(() => {
+    dispatcher(handleLogout());
+  });
 };
+
+export const handleLogout = () => ({
+  type: HANDLE_LOGOUT,
+  payload: '',
+});
+
+export const handleError = error => ({
+  type: HANDLE_ERROR,
+  payload: error,
+});
