@@ -37,14 +37,14 @@ const AppStack = createStackNavigator({
 	Tabs: createMaterialBottomTabNavigator({
 		Dashboard: { screen: DashboardScreen },
 		Settings: { screen: DashboardScreen }, // how to create like a page list here
+		// Create page here just like i do above ^ DashBoardScreen is a page component
+		// I import at the top so you need to create a component and then import it like so.
 	  }, {
 		initialRouteName: 'Dashboard',
 		activeColor: '#f0edf6',
 		inactiveColor: '#3e2465',
 		barStyle: { backgroundColor: '#694fad' },
 	  }),
-	// Dashboard: DashboardScreen,
-	// Profile: DashboardScreen,
 });
 
 

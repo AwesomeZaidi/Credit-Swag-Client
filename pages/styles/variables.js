@@ -13,7 +13,6 @@ const inputbg = '#fff'; // white
 const labelText = '#727279'; // gray
 const inputText = '#0d0d0d'; // dark gray
 
-
 export {
     bg,
     secondaryBg,
