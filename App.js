@@ -17,8 +17,10 @@ import ConnectScreen from './pages/Connect/';
 import DashboardScreen from './pages/Dashboard/';
 import EnterScreen from  './pages/AuthScreens/Enter/';
 import AuthLoadingScreen from './pages/AuthScreens/AuthLoading';
+import styles from './pages/styles/variables'
 
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // createMaterialBottomTabNavigator(
 // 	// RouteConfigs,
@@ -35,18 +37,41 @@ const ConnectStack = createStackNavigator({
 
 const AppStack = createStackNavigator({
 	Tabs: createMaterialBottomTabNavigator({
-		Dashboard: { screen: DashboardScreen },
-		Settings: { screen: DashboardScreen }, // how to create like a page list here
-		// Create page here just like i do above ^ DashBoardScreen is a page component
-		// I import at the top so you need to create a component and then import it like so.
-	  }, {
-		initialRouteName: 'Dashboard',
-		activeColor: '#f0edf6',
-		inactiveColor: '#3e2465',
-		barStyle: { backgroundColor: '#694fad' },
-	  }),
+		Home: DashboardScreen,
+		Settings: DashboardScreen,
+		},
+		{
+		defaultNavigationOptions: ({ navigation }) => ({
+			tabBarIcon: ({ focused, horizontal, tintColor }) => {
+			const { routeName } = navigation.state;
+			let IconComponent = Ionicons;
+			let iconName;
+			if (routeName === 'Home') {
+				iconName = `ios-information-circle${focused ? '' : '-outline'}`;
+			} else if (routeName === 'Settings') {
+				iconName = `ios-options`;
+			}
+			// You can return any component that you like here!
+			return <IconComponent name={iconName} size={25} color={tintColor} />;
+			},
+		}),
+		tabBarOptions: {
+			activeTintColor: 'tomato',
+			inactiveTintColor: 'gray',
+		},
+	})
 });
-
+	// 	Dashboard: { screen: DashboardScreen },
+	// 	Settings: { screen: DashboardScreen }, // how to create like a page list here
+	// 	// Create page here just like i do above ^ DashBoardScreen is a page component
+	// 	// I import at the top so you need to create a component and then import it like so.
+	//   }, {
+	// 	initialRouteName: 'Dashboard',
+	// 	activeColor: '#373645',
+	// 	inactiveColor: '#f4f4f4',
+	// 	barStyle: { backgroundColor: '#373645' },
+	//   },
+	  
 
 const MainNavigator = createAppContainer(createSwitchNavigator(
 	{

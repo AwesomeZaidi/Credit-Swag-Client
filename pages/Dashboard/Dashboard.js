@@ -56,14 +56,22 @@ class Dashboard extends Component {
         }
     }
 
+    // clearAsyncStorage = async() => {
+    //     AsyncStorage.clear();
+    // }
+
     render() {
         
-        const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
+        // this data needs to be a list of balances we fetch from the backend.
+        const balances = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
 
         return (
             <ScrollView style={common.page}>
                 <View style={styles.top}>
                 <Text onPress={this.logOut}>LOGOUT</Text>
+                {/* <Button onPress={this.clearAsyncStorage}>
+                    <Text>Clear Async Storage</Text>
+                </Button> */}
 
                     <Text style={common.h1_primary}>Balance</Text>
                     <Text style={styles.balanceText}>${this.props.user.currentBalance}</Text>
@@ -72,7 +80,7 @@ class Dashboard extends Component {
 
                 <AreaChart
                     style={{ height: 200 }}
-                    data={ data }
+                    data={ balances }
                     contentInset={{ top: 30, bottom: 30 }}
                     curve={ shape.curveNatural }
                     svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
