@@ -3,10 +3,14 @@ import { createRootNavigator,
 	createStackNavigator,
 	createSwitchNavigator,
 	createAppContainer,
-	SwitchNavigator
+	SwitchNavigator,
+	createBottomTabNavigator,
 } from 'react-navigation';
 import { Provider } from "react-redux";
 import store from "./redux/store";
+
+import { YellowBox, Platform } from 'react-native';
+YellowBox.ignoreWarnings(['Remote debugger']);
 // import axios from 'axios';
 // axios.defaults.withCredentials = true  // enable axios post cookie, default false
 
@@ -17,10 +21,9 @@ import ConnectScreen from './pages/Connect/';
 import DashboardScreen from './pages/Dashboard/';
 import EnterScreen from  './pages/AuthScreens/Enter/';
 import AuthLoadingScreen from './pages/AuthScreens/AuthLoading';
-import styles from './pages/styles/variables'
 
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // createMaterialBottomTabNavigator(
 // 	// RouteConfigs,
@@ -35,50 +38,42 @@ const ConnectStack = createStackNavigator({
 	Connect: ConnectScreen,
 });
 
-const AppStack = createStackNavigator({
-	Tabs: createMaterialBottomTabNavigator({
-		Home: DashboardScreen,
-		Settings: DashboardScreen,
-		},
-		{
-		defaultNavigationOptions: ({ navigation }) => ({
-			tabBarIcon: ({ focused, horizontal, tintColor }) => {
-			const { routeName } = navigation.state;
-			let IconComponent = Ionicons;
-			let iconName;
-			if (routeName === 'Home') {
-				iconName = `ios-information-circle${focused ? '' : '-outline'}`;
-			} else if (routeName === 'Settings') {
-				iconName = `ios-options`;
-			}
-			// You can return any component that you like here!
-			return <IconComponent name={iconName} size={25} color={tintColor} />;
-			},
-		}),
-		tabBarOptions: {
-			activeTintColor: 'tomato',
-			inactiveTintColor: 'gray',
-		},
-	})
-});
-	// 	Dashboard: { screen: DashboardScreen },
-	// 	Settings: { screen: DashboardScreen }, // how to create like a page list here
-	// 	// Create page here just like i do above ^ DashBoardScreen is a page component
-	// 	// I import at the top so you need to create a component and then import it like so.
-	//   }, {
-	// 	initialRouteName: 'Dashboard',
-	// 	activeColor: '#373645',
-	// 	inactiveColor: '#f4f4f4',
-	// 	barStyle: { backgroundColor: '#373645' },
-	//   },
-	  
-
 const MainNavigator = createAppContainer(createSwitchNavigator(
 	{
+		App: createBottomTabNavigator({
+				Dashboard: DashboardScreen,
+				Bills: DashboardScreen,
+				Profile: DashboardScreen,
+			}, {
+				defaultNavigationOptions: ({ navigation }) => ({
+				  tabBarIcon: ({ focused, horizontal, tintColor }) => {
+					const { routeName } = navigation.state;
+					let IconComponent = Ionicons;
+					let iconName;
+					if (routeName === 'Dashboard') {
+					  iconName = Platform.OS === "ios" ? "ios-home" : "md-home";
+					} else if (routeName === 'Bills') {
+						iconName = Platform.OS === "ios" ? "ios-cash" : "md-cash";
+					} else if (routeName === 'Profile') {
+						iconName = Platform.OS === "ios" ? "ios-settings" : "md-settings";
+					}
+					// You can return any component that you like here!
+					return <IconComponent name={iconName} size={25} color={tintColor} />;
+				  },
+				}),
+				tabBarOptions: {
+					inactiveTintColor: 'lightgray',
+					tintColor: <LinearGradient colors={['#C35EBF', '#9861D9', '#7662EA']} />,
+					activeTintColor: '#C85EBD',
+					showLabel: false,
+					showIcon: true,
+					style: {backgroundColor: '#373645', height: 60, padding:0, margin:0}
+				},
+			  }
+		),
+		Connect: ConnectStack,
 		AuthLoading: AuthLoadingScreen,
-		App: AppStack,
 		Auth: AuthStack,
-		Connect: ConnectStack
 	},
 	{
 		initialRouteName: 'AuthLoading',
