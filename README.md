@@ -1,5 +1,8 @@
 # Credit Swag
 
+## Preqequsites
+...
+
 ## Set up
 1. Clone repo `git clone https://github.com/AwesomeZaidi/Credit-Swag-Client`
 2. Run `npm install` from root directory
