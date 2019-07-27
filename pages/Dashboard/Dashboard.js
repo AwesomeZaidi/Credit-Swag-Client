@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import {
     Text,
     ScrollView,
+    FlatList,
     View
 } from 'react-native';
 import { logOut, connectBank } from '../../redux/actions/index';
@@ -17,6 +18,8 @@ import common from '../styles/common.style';
 import styles from './DashboardStyles';
 
 import { LinearGradient } from 'expo-linear-gradient';
+import { AreaChart, Grid } from 'react-native-svg-charts'
+import * as shape from 'd3-shape'
 
 // ----------------------------------------------------------------------------------
 // Dashboard Component Class
@@ -41,16 +44,53 @@ class Dashboard extends Component {
         header: null,
     };
 
+    getIcon = (category) => {
+        switch(category) {
+            case('Payment'):
+                return <Text style={{fontSize: 26}}>💰</Text>
+            case('Travel'):
+                return <Text style={{fontSize: 26}}>🗺</Text>
+            case('Food and Drink'):
+                return <Text style={{fontSize: 26}}>🍕</Text>
+            default:
+                return <Text style={{fontSize: 26}}>🤷‍</Text>
+        }
+    }
+
+    // clearAsyncStorage = async() => {
+    //     AsyncStorage.clear();
+    // }
+
     render() {
         
+        // this data needs to be a list of balances we fetch from the backend.
+        // const balances = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
+        const maxBalance = Math.max(...this.props.balances);
         return (
             <ScrollView style={common.page}>
                 <View style={styles.top}>
                 <Text onPress={this.logOut}>LOGOUT</Text>
+                {/* <Button onPress={this.clearAsyncStorage}>
+                    <Text>Clear Async Storage</Text>
+                </Button> */}
 
                     <Text style={common.h1_primary}>Balance</Text>
                     <Text style={styles.balanceText}>${this.props.user.currentBalance}</Text>
                 </View>
+
+
+                <AreaChart
+                    style={{ height: 200 }}
+                    data={ this.props.balances ? this.props.balances : [0] }
+                    contentInset={{ top: 30, bottom: 30 }}
+                    curve={ shape.curveNatural }
+                    svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                >
+                    <Grid/>
+                </AreaChart>
+               {/* <View style={styles.top}>
+                    <Text style={common.h1_primary}>Upcoming</Text>
+                </View> */}
 
                 <View style={styles.top}>
                     <Text style={common.h1_primary}>Past</Text>
@@ -59,14 +99,17 @@ class Dashboard extends Component {
                         this.props.user.transactions.map((transaction, index) => {
                             return (
                                 <View key={index} style={styles.item}>
-                                    <LinearGradient
-                                        colors={['#C35EBF', '#9861D9', '#7662EA']}
-                                        style={{ padding: 15, alignItems: 'center', borderRadius: 10,marginRight: 10 }}>
-                                    </LinearGradient>
                                     <View style={styles.leftPast}>
-                                        
-                                        <Text style={styles.itemCat}>{transaction.category[0]}</Text>
-                                        <Text style={styles.itemDate}>{transaction.date}</Text>
+                                        <LinearGradient
+                                            
+                                            colors={['#C35EBF', '#9861D9', '#7662EA']}
+                                            style={{ padding: 4, alignItems: 'center', borderRadius: 10, marginRight: 12, justifyContent: 'center', alignSelf: 'center' }}>
+                                            {this.getIcon(transaction.category[0])}
+                                        </LinearGradient> 
+                                        <View>
+                                            <Text style={styles.itemCat}>{transaction.category[0]}</Text>
+                                            <Text style={styles.itemDate}>{transaction.date}</Text>
+                                        </View>
                                     </View>
                                     <Text style={ Math.sign(transaction.amount)  == '-1' ? styles.red : styles.green }>
                                         ${transaction.amount}
@@ -83,7 +126,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        balances: state.balances,
     };
 };
 

@@ -85,7 +85,7 @@ export const handleSignup = user => ({
 });
 
 export const getGraphData = userId => async (dispatch) => {
-  const res = await axios.get(`${baseUrl}/getGraphData`);
+  const res = await axios.get(`${baseUrl}/getGraphData`, {userId});
   dispatch({
     type: GET_GRAPH_DATA,
     payload: {

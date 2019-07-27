@@ -14,7 +14,7 @@ const initialState = {
   user: "",
   error: false,
   dates: '',
-  balances: ''
+  balances: 0
 };
 
 function rootReducer(state = initialState, action) {
