@@ -5,13 +5,16 @@
 // ----------------------------------------------------------------------------------
 import { HANDLE_LOGIN, HANDLE_SIGNUP, HANDLE_ERROR,
         HANDLE_LOGOUT, LOAD_DATA, CONNECT_BANK, GET_BALANCE_AND_TRANSACTIONS,
+        GET_GRAPH_DATA,
 } from "../constants/action-types";
 
 import { AsyncStorage } from 'react-native';
 
 const initialState = {
   user: "",
-  error: false
+  error: false,
+  dates: '',
+  balances: ''
 };
 
 function rootReducer(state = initialState, action) {
@@ -30,6 +33,9 @@ function rootReducer(state = initialState, action) {
       return {...state, user: updatedUser}
     case GET_BALANCE_AND_TRANSACTIONS:
       return {...state, user: action.payload}
+    case GET_GRAPH_DATA:
+        // ... is a spread operator, that grabs whats already in the state
+        return {...state, dates: action.payload.dates, balances: action.payload.balances}
     case HANDLE_LOGOUT:
       AsyncStorage.clear();
       return {...state, user: "", error: false}

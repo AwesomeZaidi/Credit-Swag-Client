@@ -9,7 +9,7 @@ import {
     View
 } from 'react-native';
 import { logOut, connectBank } from '../../redux/actions/index';
-import { getTransactions } from '../../redux/actions/index';
+import { getTransactions, getGraphData } from '../../redux/actions/index';
 
 import { connect } from "react-redux";
 
@@ -29,6 +29,7 @@ class Dashboard extends Component {
     // ------------------------------------------
     componentDidMount() {
         this.props.getTransactions(this.props.user._id);
+        this.props.getGraphData(this.props.user._id);
     }
 
     logOut = async () => {
@@ -86,12 +87,14 @@ const mapStateToProps = state => {
     };
 };
 
+// Redux mapDispatchToProps allows you to pass action functions from Redux to be used in your components.
 function mapDispatchToProps() {
     return {
         logOut,
-        getTransactions
+        getTransactions,
+        getGraphData
     };
 };
 
-
+// this is how you connect a component to redux from  a  high level - connect function
 export default connect(mapStateToProps, mapDispatchToProps())(Dashboard);

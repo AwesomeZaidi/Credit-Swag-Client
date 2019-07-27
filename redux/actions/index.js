@@ -11,10 +11,11 @@ import {
   CONNECT_BANK,
   GET_BALANCE_AND_TRANSACTIONS,
   HANDLE_ERROR, LOAD_DATA,
+  GET_GRAPH_DATA,
 } from '../constants/action-types';
 
 // const baseUrl = 'https://creditswagapi.herokuapp.com/';
-const baseUrl = 'https://437e1d58.ngrok.io/';
+const baseUrl = 'https://fdd7d428.ngrok.io';
 
 export const loadData = state => ({
   type: LOAD_DATA,
@@ -22,7 +23,7 @@ export const loadData = state => ({
 });
 
 export const connectBank = (userId, public_token) => async (dispatch) => {
-  await axios.post(`${baseUrl}get_access_token`, { public_token, userId });
+  await axios.post(`${baseUrl}/get_access_token`, { public_token, userId });
   dispatch({
     type: CONNECT_BANK,
     payload: public_token,
@@ -30,7 +31,7 @@ export const connectBank = (userId, public_token) => async (dispatch) => {
 };
 
 export const getTransactions = userId => async (dispatch) => {
-  const res = await axios.post(`${baseUrl}transactions`, { userId });
+  const res = await axios.post(`${baseUrl}/transactions`, { userId });
   dispatch({
     type: GET_BALANCE_AND_TRANSACTIONS,
     payload: res.data.user,
@@ -40,7 +41,7 @@ export const getTransactions = userId => async (dispatch) => {
 export function logIn(loginState) {
   return (dispatcher) => {
     try {
-      axios.post(`${baseUrl}login`, loginState).then((res) => {
+      axios.post(`${baseUrl}/login`, loginState).then((res) => {
         dispatcher(handleLogin(res.data.user)); // THUNKED IT!
       }).catch(() => {
         dispatcher(handleError(true));
@@ -58,13 +59,15 @@ export const handleLogin = user => ({
 });
 
 export function signUp(signupState) {
+  console.log('here signupState:', signupState);
+  
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Access-Control-Allow-Origin': '*',
   };
   return async (dispatcher) => {
     try {
-      const res = await axios.post(`${baseUrl}signup`, signupState, { headers });
+      const res = await axios.post(`${baseUrl}/signup`, signupState, { headers });
       if (res.status === 200) {
         dispatcher(handleSignup(res.data));
       } else {
@@ -81,8 +84,19 @@ export const handleSignup = user => ({
   payload: user,
 });
 
+export const getGraphData = userId => async (dispatch) => {
+  const res = await axios.get(`${baseUrl}/getGraphData`);
+  dispatch({
+    type: GET_GRAPH_DATA,
+    payload: {
+      dates: res.data.dates,
+      balances: res.data.balances
+    },
+  });
+};
+
 export const logOut = () => (dispatcher) => {
-  axios.delete(`${baseUrl}logout`).then(() => {
+  axios.delete(`${baseUrl}/logout`).then(() => {
     dispatcher(handleLogout());
   });
 };
