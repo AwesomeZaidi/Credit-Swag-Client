@@ -140,5 +140,6 @@ function mapDispatchToProps() {
     };
 };
 
+
 // this is how you connect a component to redux from  a  high level - connect function
 export default connect(mapStateToProps, mapDispatchToProps())(Dashboard);
