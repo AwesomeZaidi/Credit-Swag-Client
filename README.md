@@ -39,3 +39,4 @@ If you  hit submit on login or signup, we pass  that data into a Redux function 
 
 In `app.js` you'll see in the `render return` we use a MainNavigator that is a AppContainer that takes in a SwitchNavigator
 this allows for us to switch between different navigation flows for different parts  of the app, `App` that has a createBottomTabNavigator for the bottom navigation you see when logged in. 
+
