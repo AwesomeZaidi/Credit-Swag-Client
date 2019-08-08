@@ -4,14 +4,16 @@
 // Imports
 // ----------------------------------------------------------------------------------
 import { HANDLE_LOGIN, HANDLE_SIGNUP, HANDLE_ERROR,
-        HANDLE_LOGOUT, LOAD_DATA, CONNECT_BANK, GET_BALANCE_AND_TRANSACTIONS,
+        HANDLE_LOGOUT, LOAD_DATA, CONNECT_BANK,
+        GET_BALANCE_AND_TRANSACTIONS, GET_BALANCE_GRAPH_DATA,
 } from "../constants/action-types";
 
 import { AsyncStorage } from 'react-native';
 
 const initialState = {
-  user: "",
-  error: false
+  user: false,
+  error: false,
+  balanceGraphData: false
 };
 
 function rootReducer(state = initialState, action) {
@@ -30,9 +32,11 @@ function rootReducer(state = initialState, action) {
       return {...state, user: updatedUser}
     case GET_BALANCE_AND_TRANSACTIONS:
       return {...state, user: action.payload}
+    case GET_BALANCE_GRAPH_DATA:
+        return {...state, balanceGraphData: action.payload}
     case HANDLE_LOGOUT:
       AsyncStorage.clear();
-      return {...state, user: "", error: false}
+      return {...state, user: false, error: false, balanceGraphData: false}
     default: 
         return state;
   }

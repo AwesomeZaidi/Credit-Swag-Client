@@ -10,16 +10,25 @@ import {
   HANDLE_LOGOUT,
   CONNECT_BANK,
   GET_BALANCE_AND_TRANSACTIONS,
+  GET_BALANCE_GRAPH_DATA,
   HANDLE_ERROR, LOAD_DATA,
 } from '../constants/action-types';
 
 // const baseUrl = 'https://creditswagapi.herokuapp.com/';
-const baseUrl = 'https://40a1f508.ngrok.io/';
+const baseUrl = 'https://b0676446.ngrok.io/';
 
 export const loadData = state => ({
   type: LOAD_DATA,
   payload: state,
 });
+
+export const getBalanceGraphData = userId => async (dispatch) => {
+  const res = await axios.post(`${baseUrl}getBalanceGraphData`, { userId });
+  dispatch({
+    type: GET_BALANCE_GRAPH_DATA,
+    payload: res.data,
+  });
+};
 
 export const connectBank = (userId, public_token) => async (dispatch) => {
   await axios.post(`${baseUrl}get_access_token`, { public_token, userId });
@@ -82,9 +91,7 @@ export const handleSignup = user => ({
 });
 
 export const logOut = () => (dispatcher) => {
-  axios.delete(`${baseUrl}logout`).then(() => {
-    dispatcher(handleLogout());
-  });
+  dispatcher(handleLogout());
 };
 
 export const handleLogout = () => ({

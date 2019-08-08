@@ -9,9 +9,17 @@ import {
     FlatList,
     View
 } from 'react-native';
-import { logOut, connectBank } from '../../redux/actions/index';
-import { getTransactions } from '../../redux/actions/index';
-
+import { getTransactions, getBalanceGraphData, logOut } from '../../redux/actions/index';
+import {
+    LineChart,
+    BarChart,
+    PieChart,
+    ProgressChart,
+    ContributionGraph,
+    StackedBarChart
+  } from 'react-native-chart-kit'
+  import { Dimensions } from 'react-native'
+  const screenWidth = Dimensions.get('window').width
 import { connect } from "react-redux";
 
 import common from '../styles/common.style';
@@ -26,18 +34,25 @@ import * as shape from 'd3-shape'
 // ----------------------------------------------------------------------------------
 
 class Dashboard extends Component {
-
     // ------------------------------------------
     // componentDidMount: fetches the user transaction and balance data from redux.
     // ------------------------------------------
-    componentDidMount() {
-        this.props.getTransactions(this.props.user._id);
+    state = {
+        loggedOut: false
     }
 
-    logOut = async () => {
-        this.props.logOut();
+    componentDidMount() {
+        if (!this.props.user) {
+            this.props.navigation.navigate('Auth');
+        }
+        this.props.getTransactions(this.props.user._id);
+        this.props.getBalanceGraphData(this.props.user._id);
+    }
+
+    _signOutAsync = async () => {
+        await this.props.logOut();
         this.props.navigation.navigate('Auth');
-    };
+      };
     
     static navigationOptions = {
         header: null,
@@ -56,44 +71,67 @@ class Dashboard extends Component {
         }
     }
 
-    // clearAsyncStorage = async() => {
-    //     AsyncStorage.clear();
-    // }
-
     render() {
-        
+        if (!this.props.user) {
+            this.props.navigation.navigate('Auth');
+        }
+        // console.log('this.props.balanceGraphData:', this.props.balanceGraphData);
         // this data needs to be a list of balances we fetch from the backend.
-        const balances = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
+        const balances = [ 100, 50, 100, 50, 100, 50, 100, ]
+        // we can start our cron job to store a queue of the weeks balances
+        // and a queue of the months balances 
+        let values = [];
+        this.props.balanceGraphData &&
+        this.props.balanceGraphData.map((obj) => {
+            values.push(Number(obj.value));
+        });
 
         return (
-            <ScrollView style={common.page}>
+            <ScrollView contentContainerStyle={common.page}>
                 <View style={styles.top}>
-                <Text onPress={this.logOut}>LOGOUT</Text>
-                {/* <Button onPress={this.clearAsyncStorage}>
-                    <Text>Clear Async Storage</Text>
-                </Button> */}
-
                     <Text style={common.h1_primary}>Balance</Text>
                     <Text style={styles.balanceText}>${this.props.user.currentBalance}</Text>
                 </View>
-
-
+                <View>
+  <LineChart
+    data={{
+      datasets: [{
+        data: balances
+      }]
+    }}
+    width={Dimensions.get('window').width} // from react-native
+    height={220}
+    yAxisLabel={'$'}
+    chartConfig={{
+      backgroundColor: '#2B2C3B',
+      backgroundGradientFrom: '#2B2B3A',
+      backgroundGradientTo: '#2B2B3A',
+    //   decimalPlaces: 2, // optional, defaults to 2dp
+      color: (opacity = 0.2) => `rgba(123, 192, 56, ${opacity})`,
+      style: {
+        borderRadius: 16
+      }
+    }}
+    // bezier
+    style={{
+      marginVertical: 8,
+      borderRadius: 16
+    }}
+  />
+</View>
+{/* 
                 <AreaChart
                     style={{ height: 200 }}
                     data={ balances }
                     contentInset={{ top: 30, bottom: 30 }}
                     curve={ shape.curveNatural }
                     svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
-                >
-                    <Grid/>
-                </AreaChart>
-               {/* <View style={styles.top}>
-                    <Text style={common.h1_primary}>Upcoming</Text>
-                </View> */}
+                > */}
+                    {/* <Grid/>
+                </AreaChart> */}
 
                 <View style={styles.top}>
                     <Text style={common.h1_primary}>Past</Text>
-                    {/* <View style={styles.past}> */}
                     {
                         this.props.user.transactions.map((transaction, index) => {
                             return (
@@ -125,14 +163,16 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        balanceGraphData: state.balanceGraphData,
     };
 };
 
 function mapDispatchToProps() {
     return {
         logOut,
-        getTransactions
+        getTransactions,
+        getBalanceGraphData,
     };
 };
 
