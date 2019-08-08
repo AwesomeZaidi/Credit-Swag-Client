@@ -58,6 +58,7 @@ export default StyleSheet.create({
     text_sm: {
         fontSize: 14,
         textAlign: 'center',
+        color: text
     },
     graytxt: {
         color: labelText
