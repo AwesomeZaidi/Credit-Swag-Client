@@ -22,8 +22,7 @@ class AuthLoading extends React.Component {
     try {
       const stateData = await AsyncStorage.getItem('CREDIT_SWAG_STATE');  
       this.props.navigation.navigate(stateData.user ? 'App' : 'Auth');
-    } catch(err) {
-      console.log('err:', err);    
+    } catch(err) {  
       this.props.navigation.navigate('Auth');
     }
   };
