@@ -19,8 +19,11 @@ YellowBox.ignoreWarnings(['Remote debugger']);
 // ----------------------------------------------------------------------------------
 import ConnectScreen from './pages/Connect/';
 import DashboardScreen from './pages/Dashboard/';
+import SettingsScreen from './pages/Settings/';
+import NotificationsScreen from './pages/Settings/Notifications/';
+import ProfileScreen from './pages/Settings/Profile';
 import EnterScreen from  './pages/AuthScreens/Enter/';
-import AuthLoadingScreen from './pages/AuthScreens/AuthLoading';
+import AuthLoadingScreen from './pages/AuthScreens/AuthLoading/';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -38,12 +41,18 @@ const ConnectStack = createStackNavigator({
 	Connect: ConnectScreen,
 });
 
+const SettingsStack = createStackNavigator({ 
+	Settings: SettingsScreen,
+	Notifications: NotificationsScreen,
+	Profile: ProfileScreen,
+});
+
 const MainNavigator = createAppContainer(createSwitchNavigator(
 	{
 		App: createBottomTabNavigator({
 				Dashboard: DashboardScreen,
 				Bills: DashboardScreen,
-				Profile: DashboardScreen,
+				Settings: SettingsStack,
 			}, {
 				defaultNavigationOptions: ({ navigation }) => ({
 				  tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -54,8 +63,8 @@ const MainNavigator = createAppContainer(createSwitchNavigator(
 					  iconName = Platform.OS === "ios" ? "ios-home" : "md-home";
 					} else if (routeName === 'Bills') {
 						iconName = Platform.OS === "ios" ? "ios-cash" : "md-cash";
-					} else if (routeName === 'Profile') {
-						iconName = Platform.OS === "ios" ? "ios-settings" : "md-settings";
+					} else if (routeName === 'Settings') {
+						iconName = Platform.OS === "ios" ? "ios-menu" : "md-menu";
 					}
 					// You can return any component that you like here!
 					return <IconComponent name={iconName} size={25} color={tintColor} />;
