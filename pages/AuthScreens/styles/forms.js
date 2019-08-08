@@ -14,7 +14,6 @@ import { Dimensions } from "react-native";
 
 let width = Dimensions.get('window').width; //full width
 let height = Dimensions.get('window').height; //full height
-// console.log('HEIGHT:', height);
 
 const styles = StyleSheet.create({
   form: {
