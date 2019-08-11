@@ -48,11 +48,6 @@ class Dashboard extends Component {
         this.props.getTransactions(this.props.user._id);
         this.props.getBalanceGraphData(this.props.user._id);
     }
-
-    _signOutAsync = async () => {
-        await this.props.logOut();
-        this.props.navigation.navigate('Auth');
-      };
     
     static navigationOptions = {
         header: null,
@@ -75,9 +70,7 @@ class Dashboard extends Component {
         if (!this.props.user) {
             this.props.navigation.navigate('Auth');
         }
-        // console.log('this.props.balanceGraphData:', this.props.balanceGraphData);
-        // this data needs to be a list of balances we fetch from the backend.
-        const balances = [ 100, 50, 100, 50, 100, 50, 100, ]
+        // const balances = [ 100, 50, 100, 50, 100, 50, 100]
         // we can start our cron job to store a queue of the weeks balances
         // and a queue of the months balances 
         let values = [];
@@ -85,78 +78,76 @@ class Dashboard extends Component {
         this.props.balanceGraphData.map((obj) => {
             values.push(Number(obj.value));
         });
-
+        if (values.length > 7) {
+            values = values.slice(-7)
+        }
         return (
-            <ScrollView contentContainerStyle={common.page}>
+            <ScrollView style={common.page}>
                 <View style={styles.top}>
                     <Text style={common.h1_primary}>Balance</Text>
                     <Text style={styles.balanceText}>${this.props.user.currentBalance}</Text>
                 </View>
                 <View>
-  <LineChart
-    data={{
-      datasets: [{
-        data: balances
-      }]
-    }}
-    width={Dimensions.get('window').width} // from react-native
-    height={220}
-    yAxisLabel={'$'}
-    chartConfig={{
-      backgroundColor: '#2B2C3B',
-      backgroundGradientFrom: '#2B2B3A',
-      backgroundGradientTo: '#2B2B3A',
-    //   decimalPlaces: 2, // optional, defaults to 2dp
-      color: (opacity = 0.2) => `rgba(123, 192, 56, ${opacity})`,
-      style: {
-        borderRadius: 16
-      }
-    }}
-    // bezier
-    style={{
-      marginVertical: 8,
-      borderRadius: 16
-    }}
-  />
-</View>
-{/* 
-                <AreaChart
-                    style={{ height: 200 }}
-                    data={ balances }
-                    contentInset={{ top: 30, bottom: 30 }}
-                    curve={ shape.curveNatural }
-                    svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
-                > */}
-                    {/* <Grid/>
-                </AreaChart> */}
-
-                <View style={styles.top}>
-                    <Text style={common.h1_primary}>Past</Text>
-                    {
-                        this.props.user.transactions.map((transaction, index) => {
-                            return (
-                                <View key={index} style={styles.item}>
-                                    <View style={styles.leftPast}>
-                                        <LinearGradient
-                                            
-                                            colors={['#C35EBF', '#9861D9', '#7662EA']}
-                                            style={{ padding: 4, alignItems: 'center', borderRadius: 10, marginRight: 12, justifyContent: 'center', alignSelf: 'center' }}>
-                                            {this.getIcon(transaction.category[0])}
-                                        </LinearGradient> 
-                                        <View>
-                                            <Text style={styles.itemCat}>{transaction.category[0]}</Text>
-                                            <Text style={styles.itemDate}>{transaction.date}</Text>
-                                        </View>
+                    <LineChart
+                    data={{
+                        datasets: [{
+                        data: values
+                        }]
+                    }}
+                    width={Dimensions.get('window').width} // from react-native
+                    height={220}
+                    yAxisLabel={'$'}
+                    chartConfig={{
+                        backgroundColor: '#2B2C3B',
+                        backgroundGradientFrom: '#2B2B3A',
+                        backgroundGradientTo: '#2B2B3A',
+                        color: (opacity = 0) => `rgba(123, 192, 56, ${opacity})`,
+                    //   style: {
+                    //     borderRadius: 16
+                    //   }
+                    }}
+                    // bezier
+                    // style={{
+                    //   marginVertical: 8,
+                    //   borderRadius: 16
+                    // }}
+                />
+            </View>
+            <View>
+                <Text style={common.h1_primary}>Savings Goals</Text>
+                <LinearGradient         
+                    colors={['#C35EBF', '#9861D9', '#7662EA']}
+                    style={{ padding: 4, alignItems: 'center', borderRadius: 10, marginRight: 12, justifyContent: 'center', alignSelf: 'center' }}>
+                    <Text style={{fontSize: 26}}>🤷‍</Text>
+                </LinearGradient> 
+            </View>
+            <View style={styles.top}>
+                <Text style={common.h1_primary}>Past</Text>
+                {
+                    this.props.user.transactions.map((transaction, index) => {
+                        return (
+                            <View key={index} style={styles.item}>
+                                <View style={styles.leftPast}>
+                                    <LinearGradient
+                                        
+                                        colors={['#C35EBF', '#9861D9', '#7662EA']}
+                                        style={{ padding: 4, alignItems: 'center', borderRadius: 10, marginRight: 12, justifyContent: 'center', alignSelf: 'center' }}>
+                                        {this.getIcon(transaction.category[0])}
+                                    </LinearGradient> 
+                                    <View>
+                                        <Text style={styles.itemCat}>{transaction.category[0]}</Text>
+                                        <Text style={styles.itemDate}>{transaction.date}</Text>
                                     </View>
-                                    <Text style={ Math.sign(transaction.amount)  == '-1' ? styles.red : styles.green }>
-                                        ${transaction.amount}
-                                    </Text>
                                 </View>
-                            )
-                        })
-                    }
-                </View>
-            </ScrollView>          
+                                <Text style={ Math.sign(transaction.amount)  == '-1' ? styles.red : styles.green }>
+                                    ${transaction.amount}
+                                </Text>
+                            </View>
+                        )
+                    })
+                }
+            </View>
+        </ScrollView>          
         )
     };
 };
