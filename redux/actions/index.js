@@ -5,6 +5,7 @@
 // Imports
 // ----------------------------------------------------------------------------------
 import axios from 'axios';
+
 import {
   HANDLE_LOGIN, HANDLE_SIGNUP,
   HANDLE_LOGOUT,
@@ -15,7 +16,7 @@ import {
 } from '../constants/action-types';
 
 // const baseUrl = 'https://creditswagapi.herokuapp.com/';
-const baseUrl = 'https://b0676446.ngrok.io/';
+const baseUrl = 'https://e5a589a3.ngrok.io/';
 
 export const loadData = state => ({
   type: LOAD_DATA,
@@ -66,14 +67,15 @@ export const handleLogin = user => ({
   payload_error: false,
 });
 
-export function signUp(signupState) {
+export function signUp(signupState, notificationToken) {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Access-Control-Allow-Origin': '*',
   };
+  const data = {...signupState, notificationToken}
   return async (dispatcher) => {
     try {
-      const res = await axios.post(`${baseUrl}signup`, signupState, { headers });
+      const res = await axios.post(`${baseUrl}signup`, data, headers);
       if (res.status === 200) {
         dispatcher(handleSignup(res.data));
       } else {
