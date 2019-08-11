@@ -7,9 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-// lottie file not working
-// import LottieView from 'lottie-react-native';
-// import loadingAnimation from '../../assets/loading.json';
+import { connect } from "react-redux";
 
 class AuthLoading extends React.Component {
   constructor(props) {
@@ -21,7 +19,15 @@ class AuthLoading extends React.Component {
   _bootstrapAsync = async () => {
     try {
       const stateData = await AsyncStorage.getItem('CREDIT_SWAG_STATE');  
-      this.props.navigation.navigate(stateData.user ? 'App' : 'Auth');
+      if (this.props.user === undefined) {
+        this.props.navigation.navigate('Auth');
+      } else {
+        if (this.props.user.access_token) {      
+          this.props.navigation.navigate('App');
+        } else { 
+          this.props.navigation.navigate('Connect');
+        }
+      }
     } catch(err) {  
       this.props.navigation.navigate('Auth');
     }
@@ -38,4 +44,10 @@ class AuthLoading extends React.Component {
   };
 };
 
-export default AuthLoading;
+const mapStateToProps = state => {
+  return {
+      user: state.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(AuthLoading);
