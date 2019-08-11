@@ -21,7 +21,15 @@ class Settings extends Component {
             borderBottomWidth: 0,
            }
         }
-     }
+    }
+
+     _signOutAsync = async () => {
+        console.log('here');
+        
+        this.props.logOut();
+        this.props.navigation.navigate('Auth');
+      };
+     
     render() {
         return (
             <ScrollView style={common.page}>
@@ -30,7 +38,7 @@ class Settings extends Component {
                     <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('Profile')}>Profile</Text>
                     <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('BankAccounts')}>Bank Accounts</Text>
                     <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('Notifications')}>Notications</Text>
-                    <Button style={common.h1_primary} onPress={() => this.props.logOut()} title='Logout'/>
+                    <Button style={common.h1_primary} onPress={() => this._signOutAsync()} title='Logout'/>
             </ScrollView>
         );
     }
