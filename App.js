@@ -28,11 +28,6 @@ import AuthLoadingScreen from './pages/AuthScreens/AuthLoading/';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-// createMaterialBottomTabNavigator(
-// 	// RouteConfigs,
-// 	MaterialBottomTabNavigatorConfig
-//   );
-
 const AuthStack = createStackNavigator({ 
 	Enter: EnterScreen
 });
@@ -90,6 +85,7 @@ const MainNavigator = createAppContainer(createSwitchNavigator(
 ));
 
 class App extends React.Component {
+
 	render() {
 	  return (
 		<Provider store={store}>
