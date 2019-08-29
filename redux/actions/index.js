@@ -13,15 +13,62 @@ import {
   GET_BALANCE_AND_TRANSACTIONS,
   GET_BALANCE_GRAPH_DATA,
   HANDLE_ERROR, LOAD_DATA,
+  UPDATE_OVERDRAFT_NOTIFICATION,
 } from '../constants/action-types';
 
 // const baseUrl = 'https://creditswagapi.herokuapp.com/';
-const baseUrl = 'https://e5a589a3.ngrok.io/';
+const baseUrl = 'https://8b6d0d95.ngrok.io/';
 
 export const loadData = state => ({
   type: LOAD_DATA,
   payload: state,
 });
+
+export const bigTransactionNotification = (notificationSetting, notificationOnOrOff, userId) => async (dispatch) => {
+  try {
+    let res = await axios.post(`${baseUrl}bigTransactionNotification`, { notificationSetting, notificationOnOrOff, userId });  
+    dispatch({
+      type: UPDATE_USER_NOTIFICATION_SETTINGS,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: HANDLE_ERROR,
+      payload: err
+    });
+  };
+};
+
+export const minimumBalanceNotification = (notificationSetting, notificationOnOrOff, userId) => async (dispatch) => {
+  try {
+    let res = await axios.post(`${baseUrl}minimumBalanceNotification`, { notificationSetting, notificationOnOrOff, userId });  
+    dispatch({
+      type: UPDATE_USER_NOTIFICATION_SETTINGS,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: HANDLE_ERROR,
+      payload: err
+    });
+  };
+};
+
+// ✅
+export const overdraftNotification = (notificationOnOrOff, userId) => async (dispatch) => {
+  try {
+    let res = await axios.post(`${baseUrl}overdraftNotification`, { notificationOnOrOff, userId });  
+    dispatch({
+      type: UPDATE_OVERDRAFT_NOTIFICATION,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: HANDLE_ERROR,
+      payload: err
+    });
+  };
+};
 
 export const getBalanceGraphData = userId => async (dispatch) => {
   const res = await axios.post(`${baseUrl}getBalanceGraphData`, { userId });

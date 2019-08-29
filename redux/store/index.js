@@ -12,7 +12,7 @@ const CREDIT_SWAG_STATE = "CREDIT_SWAG_STATE";
 
 // Load State 
 export const loadState = async () => {
-  try {
+  try { 
     const serializedState = await AsyncStorage.getItem(CREDIT_SWAG_STATE)
     if (serializedState === null) {
       return undefined
@@ -29,7 +29,7 @@ export const saveState = async (state) => {
     const serializedState = JSON.stringify(state)
     await AsyncStorage.setItem(CREDIT_SWAG_STATE, serializedState)
   } catch(error) {
-    console.log("Error saving data:", error)
+    console.log("Error saving data:", error);
   };
 };
 
