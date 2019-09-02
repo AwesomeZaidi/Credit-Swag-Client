@@ -65,8 +65,6 @@ class AddBill extends Component {
     };
 
     handleDatePicked = date => {
-        console.log("A date has been picked: ", date);
-        // moment(new Date()).format("DD/MM/YYYY"))
         this.hideDateTimePicker(moment(date).format("MM/DD/YYYY"));
     };
 
