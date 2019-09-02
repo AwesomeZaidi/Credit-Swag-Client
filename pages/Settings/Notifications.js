@@ -5,6 +5,7 @@ import {
     Text,
     Switch,
 } from 'react-native';
+import { withNavigationFocus } from 'react-navigation';
 import { connect } from "react-redux";
 import common from '../styles/common.style';
 import styles from './ProfileStyles';
@@ -19,19 +20,37 @@ class Notifications extends Component {
         minimumBalanceAmount: this.props.user.minimumBalanceAmount,          
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.isFocused !== this.props.isFocused) {
+            this.setState({
+                overdraftNotification: this.props.user.overdraftNotification,
+                minimumBalanceNotification: this.props.user.minimumBalanceNotification,
+                bigTransactionNotification: this.props.user.bigTransactionNotification,
+                bigTransactionAmount: this.props.user.bigTransactionAmount,
+                minimumBalanceAmount: this.props.user.minimumBalanceAmount,   
+            })
+        }
+    }
+
     toggleSwitch = (notificationSetting, notificationOnOrOff) => {
         switch(notificationSetting) {
             case 'overdraftNotification':
                 this.props.overdraftNotification(notificationOnOrOff, this.props.user._id);
-                // this.setState({
-                //     overdraftNotification: !overdraftNotification
-                // })
+                this.setState({
+                    overdraftNotification: notificationOnOrOff
+                });
                 break;
             case 'minimumBalanceNotification':
                 this.props.minimumBalanceNotification(notificationOnOrOff, this.props.user._id);
+                this.setState({
+                    minimumBalanceNotification: notificationOnOrOff
+                })
                 break;
             case 'bigTransactionNotification':
                 this.props.bigTransactionNotification(notificationOnOrOff, this.props.user._id);
+                this.setState({
+                    bigTransactionNotification: notificationOnOrOff
+                })
                 break;
             default:
                 break;
@@ -53,31 +72,7 @@ class Notifications extends Component {
         }
      }
 
-    //  A whole bag of shit dicks.
-    // x1(oldProps) {
-    //     console.log('hery');
-
-    //     setTimeout(() => {
-    //         const newProps = this.props;
-    //         console.log('oldProps.overdraftNotification:', oldProps.user.overdraftNotification);
-    //         console.log('newProps.overdraftNotification:', newProps.user.overdraftNotification);
-            
-    //         if(oldProps.user.overdraftNotification !== newProps.user.overdraftNotification) {
-    //             console.log('here');            
-    //             this.setState({
-    //                 overdraftNotification: this.props.user.overdraftNotification,
-    //                 minimumBalanceNotification: this.props.user.minimumBalanceNotification,
-    //                 bigTransactionNotification: this.props.user.bigTransactionNotification,
-    //                 bigTransactionAmount: this.props.user.bigTransactionAmount,
-    //                 minimumBalanceAmount: this.props.user.minimumBalanceAmount
-    //             });
-    //         }
-    //     }, 1000);
-    // }
-
-    render() {   
-        console.log('this.state.overdraftNotification:', this.state.overdraftNotification);
-             
+    render() {
         return (
             <View style={styles.topDownCenterPage}>
                 <Text style={[common.h1_primary, styles.profileTitle]}>Notifications</Text>
@@ -89,20 +84,19 @@ class Notifications extends Component {
                     value={this.state.overdraftNotification}
                 />
 
-                <Text>Mininum balance</Text>
+                <Text>Mininum Balance</Text>
                 <Switch
                     style={{marginTop:30}}
-                    onValueChange = {() => this.toggleSwitch('bigTransactionNotification', !this.state.bigTransactionNotification)}
-                    onValueChange = {this.toggleSwitch}
-                    value={this.state.bigTransactionNotification}
+                    onValueChange = {() => this.toggleSwitch('minimumBalanceNotification', !this.state.minimumBalanceNotification)}
+                    value={this.state.minimumBalanceNotification}
                 />
                 <Text>Amount: {this.state.minimumBalanceAmount}</Text>
 
                 <Text>Big Transaction</Text>
                 <Switch
                     style={{marginTop:30}}
-                    onValueChange = {() => this.toggleSwitch('minimumBalanceNotification', !this.state.minimumBalanceNotification)}
-                    value={this.state.minimumBalanceNotification}
+                    onValueChange = {() => this.toggleSwitch('bigTransactionNotification', !this.state.bigTransactionNotification)}
+                    value={this.state.bigTransactionNotification}
                 />
                 <Text>Amount: {this.state.bigTransactionAmount}</Text>
                 {/* editicon - open popup modal/alert thing idk whatever is easiest, not v important rn. */}
@@ -126,5 +120,29 @@ function mapDispatchToProps() {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps())(Notifications);
+export default connect(mapStateToProps, mapDispatchToProps())(withNavigationFocus(Notifications));
 
+
+// Old code D:
+
+    //  A whole bag of shit dicks.
+    // x1(oldProps) {
+    //     console.log('hery');
+
+    //     setTimeout(() => {
+    //         const newProps = this.props;
+    //         console.log('oldProps.overdraftNotification:', oldProps.user.overdraftNotification);
+    //         console.log('newProps.overdraftNotification:', newProps.user.overdraftNotification);
+            
+    //         if(oldProps.user.overdraftNotification !== newProps.user.overdraftNotification) {
+    //             console.log('here');            
+    //             this.setState({
+    //                 overdraftNotification: this.props.user.overdraftNotification,
+    //                 minimumBalanceNotification: this.props.user.minimumBalanceNotification,
+    //                 bigTransactionNotification: this.props.user.bigTransactionNotification,
+    //                 bigTransactionAmount: this.props.user.bigTransactionAmount,
+    //                 minimumBalanceAmount: this.props.user.minimumBalanceAmount
+    //             });
+    //         }
+    //     }, 1000);
+    // }
