@@ -13,7 +13,10 @@ import {
   GET_BALANCE_AND_TRANSACTIONS,
   GET_BALANCE_GRAPH_DATA,
   HANDLE_ERROR, LOAD_DATA,
+  UPDATE_BIG_TRANSACTION_NOTIFICATION,
+  UPDATE_MINIMUM_BALANCE_NOTIFICATION,
   UPDATE_OVERDRAFT_NOTIFICATION,
+  ADD_BILL,
 } from '../constants/action-types';
 
 // const baseUrl = 'https://creditswagapi.herokuapp.com/';
@@ -24,11 +27,11 @@ export const loadData = state => ({
   payload: state,
 });
 
-export const bigTransactionNotification = (notificationSetting, notificationOnOrOff, userId) => async (dispatch) => {
+export const addBill = (billData, userId) => async (dispatch) => {
   try {
-    let res = await axios.post(`${baseUrl}bigTransactionNotification`, { notificationSetting, notificationOnOrOff, userId });  
+    let res = await axios.post(`${baseUrl}addBill`, { billData, userId });    
     dispatch({
-      type: UPDATE_USER_NOTIFICATION_SETTINGS,
+      type: ADD_BILL,
       payload: res.data,
     });
   } catch (err) {
@@ -39,11 +42,11 @@ export const bigTransactionNotification = (notificationSetting, notificationOnOr
   };
 };
 
-export const minimumBalanceNotification = (notificationSetting, notificationOnOrOff, userId) => async (dispatch) => {
+export const bigTransactionNotification = (notificationOnOrOff, userId) => async (dispatch) => {
   try {
-    let res = await axios.post(`${baseUrl}minimumBalanceNotification`, { notificationSetting, notificationOnOrOff, userId });  
+    let res = await axios.post(`${baseUrl}bigTransactionNotification`, { notificationOnOrOff, userId });  
     dispatch({
-      type: UPDATE_USER_NOTIFICATION_SETTINGS,
+      type: UPDATE_BIG_TRANSACTION_NOTIFICATION,
       payload: res.data,
     });
   } catch (err) {
@@ -54,7 +57,21 @@ export const minimumBalanceNotification = (notificationSetting, notificationOnOr
   };
 };
 
-// ✅
+export const minimumBalanceNotification = (notificationOnOrOff, userId) => async (dispatch) => {
+  try {
+    let res = await axios.post(`${baseUrl}minimumBalanceNotification`, { notificationOnOrOff, userId });  
+    dispatch({
+      type: UPDATE_MINIMUM_BALANCE_NOTIFICATION,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: HANDLE_ERROR,
+      payload: err
+    });
+  };
+};
+
 export const overdraftNotification = (notificationOnOrOff, userId) => async (dispatch) => {
   try {
     let res = await axios.post(`${baseUrl}overdraftNotification`, { notificationOnOrOff, userId });  

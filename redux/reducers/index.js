@@ -6,7 +6,10 @@
 import { HANDLE_LOGIN, HANDLE_SIGNUP, HANDLE_ERROR,
         HANDLE_LOGOUT, LOAD_DATA, CONNECT_BANK,
         GET_BALANCE_AND_TRANSACTIONS, GET_BALANCE_GRAPH_DATA,
-        UPDATE_OVERDRAFT_NOTIFICATION
+        UPDATE_OVERDRAFT_NOTIFICATION,
+        UPDATE_MINIMUM_BALANCE_NOTIFICATION,
+        UPDATE_BIG_TRANSACTION_NOTIFICATION, 
+        ADD_BILL
 } from "../constants/action-types";
 
 import { AsyncStorage } from 'react-native';
@@ -15,7 +18,7 @@ const initialState = {
   user: false,
   error: false,
   balanceGraphData: false,
-  bills: false
+  bills: []
 };
 
 function rootReducer(state = initialState, action) {
@@ -37,14 +40,26 @@ function rootReducer(state = initialState, action) {
     case GET_BALANCE_GRAPH_DATA:
         return {...state, balanceGraphData: action.payload}
     case UPDATE_OVERDRAFT_NOTIFICATION:
-        let userUpdatedOverdraftNotification = state.user;          
+        console.log('1');
+        let userUpdatedOverdraftNotification = state.user; 
         userUpdatedOverdraftNotification.overdraftNotification = action.payload;
-        console.log('userUpdatedOverdraftNotification.overdraftNotification:',
-        userUpdatedOverdraftNotification.overdraftNotification);
         return {...state, user: userUpdatedOverdraftNotification}
+    case UPDATE_MINIMUM_BALANCE_NOTIFICATION:
+        console.log('2');
+        let userUpdatedMinimumBalanceNotification = state.user; 
+        userUpdatedMinimumBalanceNotification.minimumBalanceNotification = action.payload;
+        return {...state, user: userUpdatedMinimumBalanceNotification}
+    case UPDATE_BIG_TRANSACTION_NOTIFICATION:
+        console.log('3');
+        let userUpdatedBigTransactionNotificationn = state.user; 
+        userUpdatedBigTransactionNotification.bigTransactionNotification = action.payload;
+        return {...state, user: userUpdatedBigTransactionNotification}
+    case ADD_BILL:  
+        state.bills.push(action.payload);
+        return {...state, bills: state.bills, error: false}
     case HANDLE_LOGOUT:
-      AsyncStorage.clear();    
-      return {...state, user: false, error: false, balanceGraphData: false}
+      AsyncStorage.clear(); 
+      return {...state, user: false, error: false, balanceGraphData: false, bills: []}
     default: 
         return state;
   }
