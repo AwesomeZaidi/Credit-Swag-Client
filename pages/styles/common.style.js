@@ -12,12 +12,14 @@ import {
     text,
     inputText
   } from './variables';
+  import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
 
     page: {
         paddingTop: '18%',
         backgroundColor: bg,
+        height: hp('82%')
     },
     centerVerticalElements: {
         // textAlign: 'center'
@@ -29,7 +31,13 @@ export default StyleSheet.create({
         // marginLeft: 20,
         // marginRight: 20
     },
-
+    iconrow: {
+        // display: 'flex',
+        // flexDirection: 'row',
+        // justifyContent: 'center',
+        // alignItems: 'stretch',
+        // textAlign: 'center',    
+    },
     errorMsg: {
         color: danger,
         fontSize: 18,
@@ -99,12 +107,28 @@ export default StyleSheet.create({
     // BUTTON
     // ------------------------------------------
 
+    btnPrimary: {
+        backgroundColor: primary,
+        marginTop: 15,
+        marginBottom: 15,
+        width: 200,
+        height: 32,
+    },
+    circle: {
+        width: 44,
+        height: 44,
+        borderRadius: 44/2,
+        backgroundColor: primary,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // hack...
+        marginTop: 20
+    },
     circleBtn: {
         marginTop: 30,
         marginBottom: 30,
         backgroundColor: primary,
-        width: 80,
-        borderRadius: 50
       },
       iconBtn: {
         backgroundColor: primary,
@@ -119,11 +143,34 @@ export default StyleSheet.create({
           backgroundColor: primary,
           color: text,
       },
-
+      bigIcon: {
+        padding: 4,
+        alignItems: 'center',
+        borderRadius: 10,
+        marginRight: 12,
+        justifyContent: 'center',
+        alignSelf: 'center',
+      },
+      addIcon: {
+        width: 50,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
     //   HACKED STYLES TO LATER REFACTORAND GETRID OF!
     mw: {
         width: '80%',
         marginLeft: 'auto',
         marginRight: 'auto',
-    }
+    },
+    pushLeft: {
+        marginLeft: 24
+    },
+    pushOffUp: {
+        marginTop: 12
+    },
+
+    pushOffDown: {
+        marginBottom: 12
+    }, 
 });
