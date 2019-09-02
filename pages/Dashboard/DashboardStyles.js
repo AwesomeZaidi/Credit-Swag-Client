@@ -9,6 +9,7 @@ import {
     labelText,
     inputText
   } from '../styles/variables';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
     top: {
@@ -55,4 +56,17 @@ export default StyleSheet.create({
         color: green,
         right: 0
     },
+    billModal: {
+        backgroundColor: bg,
+        height: hp('20%'),
+        flex: 1,
+        paddingLeft: 16
+    },
+    modalText: {
+        marginTop: 4,
+        marginBottom: 4,
+        padding: 4,
+        fontSize: 18,    
+        color: text,
+    }
 })
