@@ -40,17 +40,14 @@ function rootReducer(state = initialState, action) {
     case GET_BALANCE_GRAPH_DATA:
         return {...state, balanceGraphData: action.payload}
     case UPDATE_OVERDRAFT_NOTIFICATION:
-        console.log('1');
         let userUpdatedOverdraftNotification = state.user; 
         userUpdatedOverdraftNotification.overdraftNotification = action.payload;
         return {...state, user: userUpdatedOverdraftNotification}
     case UPDATE_MINIMUM_BALANCE_NOTIFICATION:
-        console.log('2');
         let userUpdatedMinimumBalanceNotification = state.user; 
         userUpdatedMinimumBalanceNotification.minimumBalanceNotification = action.payload;
         return {...state, user: userUpdatedMinimumBalanceNotification}
     case UPDATE_BIG_TRANSACTION_NOTIFICATION:
-        console.log('3');
         let userUpdatedBigTransactionNotificationn = state.user; 
         userUpdatedBigTransactionNotification.bigTransactionNotification = action.payload;
         return {...state, user: userUpdatedBigTransactionNotification}
