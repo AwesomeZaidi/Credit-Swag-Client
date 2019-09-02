@@ -5,9 +5,11 @@ import {
     Text,
 } from 'react-native';
 import { connect } from "react-redux";
+import { logOut } from '../../redux/actions/index';
 import common from '../styles/common.style';
 import styles from './ProfileStyles';
 import { Avatar, Button } from 'react-native-elements';
+
 
 class Profile extends Component {
     
@@ -22,6 +24,11 @@ class Profile extends Component {
            }
         }
      }
+
+    _signOutAsync = async () => {
+        this.props.logOut();
+        this.props.navigation.navigate('Auth');
+    };
     //  When user taps on text, it should trigger a function to change the state for what's being shown,
     // the field should dissaper, and the input box should appear along with a update button... TBD
     // flow of this.
@@ -51,6 +58,9 @@ class Profile extends Component {
                         <Text style={styles.label}>Number</Text>
                         <Text style={styles.text}>+1 630-407-7258</Text> 
                     </View>
+
+                    <Button style={common.h1_primary} onPress={() => this._signOutAsync()} title='Logout'/>
+
                 </View>
             </View>
         );
@@ -63,5 +73,11 @@ const mapStateToProps = state => {
     }
 };
 
-export default connect(mapStateToProps, null)(Profile);
+function mapDispatchToProps() {
+    return {
+        logOut,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps())(Profile);
 
