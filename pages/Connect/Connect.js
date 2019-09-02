@@ -32,8 +32,15 @@ class Connect extends Component {
 		title: 'Connect Bank'
     };
 
+    // logOut = async () => {
+    //     this.props.logOut();
+    //     this.props.navigation.navigate('Auth');
+    // };
+
     render() {
         return (
+            <>
+            {/* <Text onPress={this.logOut}>LOGOUT</Text> */}
             <PlaidAuthenticator
                 onMessage={this.onMessage}
                 publicKey="e7325291c9f6c0bdb72a3829865923"
@@ -42,6 +49,7 @@ class Connect extends Component {
                 clientName="Credit Swag"
                 selectAccount={false}
             />
+            </>
         )
     }
 
