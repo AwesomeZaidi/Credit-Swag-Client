@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { createRootNavigator,
 	createStackNavigator,
 	createSwitchNavigator,
@@ -10,7 +11,10 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 
 import { YellowBox, Platform } from 'react-native';
-YellowBox.ignoreWarnings(['Remote debugger']);
+// YellowBox.ignoreWarnings(['Remote debugger']);
+if (__DEV__) {
+	require('react-devtools');
+}  
 // import axios from 'axios';
 // axios.defaults.withCredentials = true  // enable axios post cookie, default false
 
@@ -19,10 +23,12 @@ YellowBox.ignoreWarnings(['Remote debugger']);
 // ----------------------------------------------------------------------------------
 import ConnectScreen from './pages/Connect/';
 import DashboardScreen from './pages/Dashboard/';
+import GoalsScreen from './pages/Goals/';
 import SettingsScreen from './pages/Settings/';
 import NotificationsScreen from './pages/Settings/Notifications/';
 import ProfileScreen from './pages/Settings/Profile';
 import EnterScreen from  './pages/AuthScreens/Enter/';
+import AddBillScreen from  './pages/Dashboard/AddBill/';
 import AuthLoadingScreen from './pages/AuthScreens/AuthLoading/';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -42,11 +48,16 @@ const SettingsStack = createStackNavigator({
 	Profile: ProfileScreen,
 });
 
+const DashboardStack = createStackNavigator({ 
+	Dashboard: DashboardScreen,
+	AddBill: AddBillScreen
+})
+
 const MainNavigator = createAppContainer(createSwitchNavigator(
 	{
 		App: createBottomTabNavigator({
-				Dashboard: DashboardScreen,
-				Bills: DashboardScreen,
+				Dashboard: DashboardStack,
+				Goals: GoalsScreen,
 				Settings: SettingsStack,
 			}, {
 				defaultNavigationOptions: ({ navigation }) => ({
@@ -56,7 +67,7 @@ const MainNavigator = createAppContainer(createSwitchNavigator(
 					let iconName;
 					if (routeName === 'Dashboard') {
 					  iconName = Platform.OS === "ios" ? "ios-home" : "md-home";
-					} else if (routeName === 'Bills') {
+					} else if (routeName === 'Goals') {
 						iconName = Platform.OS === "ios" ? "ios-cash" : "md-cash";
 					} else if (routeName === 'Settings') {
 						iconName = Platform.OS === "ios" ? "ios-menu" : "md-menu";
@@ -85,7 +96,6 @@ const MainNavigator = createAppContainer(createSwitchNavigator(
 ));
 
 class App extends React.Component {
-
 	render() {
 	  return (
 		<Provider store={store}>
