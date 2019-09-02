@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import {
     Text,
-    ScrollView,
-    FlatList,
     View,
     Button
 } from 'react-native';
 import { connect } from "react-redux";
-import { logOut } from '../../redux/actions/index';
 import common from '../styles/common.style';
+import styles from './SettingsStyles';
 
 class Settings extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -22,24 +20,16 @@ class Settings extends Component {
            }
         }
     }
-
-     _signOutAsync = async () => {
-        console.log('here');
-        
-        this.props.logOut();
-        this.props.navigation.navigate('Auth');
-      };
      
     render() {
         return (
-            <ScrollView style={common.page}>
-                    <Text style={common.h1_primary}>Welcome, Timofey</Text>
+            <View style={[common.page, styles.settingsPage]}>
+                <Text style={common.h1_primary}>Welcome, {this.props.user.name}</Text>
 
-                    <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('Profile')}>Profile</Text>
-                    <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('BankAccounts')}>Bank Accounts</Text>
-                    <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('Notifications')}>Notications</Text>
-                    <Button style={common.h1_primary} onPress={() => this._signOutAsync()} title='Logout'/>
-            </ScrollView>
+                <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('Profile')}>Profile</Text>
+                {/* <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('BankAccounts')}>Bank Accounts</Text> */}
+                <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('Notifications')}>Notications</Text>
+            </View>
         );
     }
 }
@@ -50,10 +40,6 @@ const mapStateToProps = state => {
     };
 };
 
-function mapDispatchToProps() {
-    return {
-        logOut,
-    };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps())(Settings);
+
+export default connect(mapStateToProps, null)(Settings);
