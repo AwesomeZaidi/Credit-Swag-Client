@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "creditswag",
+    "name": "Credit Swag",
     "slug": "creditswag",
     "privacy": "public",
     "sdkVersion": "33.0.0",
@@ -25,7 +25,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Credit Swag is a budgeting app for students."
   },
   "infoPlist": {
     "NSAppTransportSecurity": {
