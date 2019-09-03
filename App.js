@@ -24,6 +24,9 @@ if (__DEV__) {
 import ConnectScreen from './pages/Connect/';
 import DashboardScreen from './pages/Dashboard/';
 import GoalsScreen from './pages/Goals/';
+import AddGoalScreen from './pages/Goals/AddGoal/';
+import SavingGoalScreen from './pages/Goals/SavingGoal/';
+
 import SettingsScreen from './pages/Settings/';
 import NotificationsScreen from './pages/Settings/Notifications/';
 import ProfileScreen from './pages/Settings/Profile';
@@ -53,11 +56,17 @@ const DashboardStack = createStackNavigator({
 	AddBill: AddBillScreen
 })
 
+const GoalStack = createStackNavigator({ 
+	Goals: GoalsScreen,
+	Goal: SavingGoalScreen,
+	AddGoal: AddGoalScreen
+})
+
 const MainNavigator = createAppContainer(createSwitchNavigator(
 	{
 		App: createBottomTabNavigator({
 				Dashboard: DashboardStack,
-				Goals: GoalsScreen,
+				Goals: GoalStack,
 				Settings: SettingsStack,
 			}, {
 				defaultNavigationOptions: ({ navigation }) => ({
