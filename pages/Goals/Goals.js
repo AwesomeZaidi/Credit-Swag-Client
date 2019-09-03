@@ -4,42 +4,60 @@ import {
     ScrollView,
     View,
     Text,
+    TouchableHighlight,
 } from 'react-native';
 import { connect } from "react-redux";
 import common from '../styles/common.style';
-import styles from './GoalsStyles';
-import { Button } from 'react-native-elements';
-import { PieChart } from 'react-native-svg-charts'
+import styles from './goalsStyles';
+import { getSavingGoals } from '../../redux/actions/index';
+import { withNavigationFocus } from 'react-navigation';
 
 class Goals extends Component {
 
+    state = {
+        goals: []
+    }
+
+    static navigationOptions = {
+        header: null,
+    };
+
+    componentDidMount() {
+        this.props.goals.length > 0 && this.props.getSavingGoals(this.props.user._id);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.isFocused !== this.props.isFocused) {
+            this.props.goals.length > 0 && this.props.getSavingGoals(this.props.user._id);
+            this.setState({
+                goals: this.props.goals
+            })
+        }
+    }
+
     render() {
-
-        const data = [ 50, 10, 40, 95, -4 ]
- 
-        const randomColor = () => ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
-    
-        const pieData = data
-            .filter(value => value > 0)
-            .map((value, index) => ({
-                value,
-                svg: {
-                    fill: randomColor(),
-                    onPress: () => console.log('press', index),
-                },
-                key: `pie-${index}`,
-            }))
-            
         return (
-            <ScrollView contentContainerStyle={styles.topDownCenterPage}>
-                <Text style={[common.h1_primary, styles.profileTitle]}>How you spend your money</Text>
-                <PieChart
-                    style={ styles.pie }
-                    data={ pieData }
-                />
+            <ScrollView style={common.page}>
+                <View style={[styles.top, common.center]}>
+                    <Text style={[common.h1_primary, styles.profileTitle]}>Saving Goals</Text>
+                    <Text style={common.h1_primary} onPress={() => this.props.navigation.navigate('AddGoal')}>+</Text>
+                </View>
 
-                <Text style={[common.h1_primary, styles.profileTitle]}>Saving Goals</Text>
-                
+                <View style={[common.topDownCenterPage, common.center]}>
+                    { this.state.goals &&
+                        this.state.goals.map((goal, index) =>  {
+                            return (
+                                <TouchableHighlight key={index} style={styles.goalContainer} onPress={() => this.props.navigation.navigate('Goal')}>
+                                    <View>
+                                        <Text style={styles.goalName}>{goal.name}</Text>
+                                        <Text style={common.h1_primary}>{goal.limit}</Text>
+                                        <Text style={styles.currentAmount}>Spent: $XYZ</Text>
+                                    </View>
+                                </TouchableHighlight>
+                            )
+                        })
+                    }
+                </View>
             </ScrollView>
         )
     }
@@ -48,8 +66,13 @@ class Goals extends Component {
 const mapStateToProps = state => {
     return {
         user: state.user,
+        goals: state.goals
     }
 };
 
-export default connect(mapStateToProps, null)(Goals);
-
+function mapDispatchToProps() {
+    return {
+        getSavingGoals,
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps())(withNavigationFocus(Goals));
