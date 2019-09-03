@@ -11,7 +11,7 @@ import {
 
 import PlaidAuthenticator from 'react-native-plaid-link';
 import { logOut, connectBank } from '../../redux/actions/index';
-// import common from '../styles/common.style';
+import common from '../styles/common.style';
 
 import { connect } from "react-redux";
 
@@ -39,8 +39,7 @@ class Connect extends Component {
 
     render() {
         return (
-            <>
-            {/* <Text onPress={this.logOut}>LOGOUT</Text> */}
+            <>  
             <PlaidAuthenticator
                 onMessage={this.onMessage}
                 publicKey="e7325291c9f6c0bdb72a3829865923"
