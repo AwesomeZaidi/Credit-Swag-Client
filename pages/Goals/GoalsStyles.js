@@ -1,3 +1,4 @@
+
 import { StyleSheet } from 'react-native';
 import {
     bg, secondaryBg,
@@ -10,65 +11,33 @@ import {
     inputText
 } from '../styles/variables';
 import { Dimensions } from 'react-native'
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
-    topDownCenterPage: {
-        // paddingTop: '10%',
-        backgroundColor: '#24232E',
-        height: Dimensions.get('window').height,
-        // flex: 1,
-        // alignItems: 'center',
-        // alignContent: 'center',
-        // textAlign: 'center',
-        // position: 'relative',
-        // justifyContent:
-    },
-    pie: {
-        height: 100,
-        zIndex: 2
-    },
-    profileTitle: {
-        paddingTop: 30,
-    },
-    topName: {
-        paddingBottom: 20,
-    },
-    profilePic: {
-        marginTop: 16,
-        marginBottom: 16,
-        paddingBottom: 16,
-        width: 150,
-        height: 150,
-        // borderRadius: 24
-    },
     top: {
-        alignItems: 'center',
-        alignContent: 'center',
-        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: wp('100%'),
+        marginBottom: 60
     },
-    bottom: {
-        flex: 3, 
-        bottom: 0,
-        // position: 'absolute',
-        backgroundColor: '#383747',
-        width: Dimensions.get('window').width,
-        // height: 260,
-        paddingTop: 50,
-
+    goalContainer: {
+        backgroundColor: '#5e5e73',
+        height: 120,
+        width: wp('90%'),
+        marginTop: 10,
+        marginBottom: 10,
+        borderRadius: 20,
+        margin: 6,
+        paddingLeft: 18
     },
-    formGroup: {
-        textAlign: 'left',
-        marginLeft: 40,
+    goalName: {
+        marginTop: 16,
+        color: 'gray',
+        fontWeight: 'bold'
     },
-    label: {
-        width: 100,
-        fontWeight: '700',
-        color: '#a4a4ad'
-    },
-    text: {
-        fontSize: 20,
-        marginTop: 6,
-        marginBottom: 24,
-        color: '#fff'
-    },
+    currentAmount: {
+        color: green,
+        fontSize: 18
+    }
 })
