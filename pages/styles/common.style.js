@@ -157,7 +157,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
       },
-    //   HACKED STYLES TO LATER REFACTORAND GETRID OF!
+    // HACKED STYLES TO LATER REFACTORAND GET RID OF!
     mw: {
         width: '80%',
         marginLeft: 'auto',
@@ -173,4 +173,7 @@ export default StyleSheet.create({
     pushOffDown: {
         marginBottom: 12
     }, 
+    hide: {
+        zIndex: -1
+    },
 });
