@@ -94,9 +94,9 @@ class AddBill extends Component {
         null
     };
 
-    handleSubmit = async () => {
+    _handleSubmit = async () => {
         this.props.addBill(this.state, this.props.user._id);
-        return this.props.navigation.navigate('Dashboard')
+        return this.props.navigation.navigate('Dashboard');
     } 
 
     render() {
@@ -156,7 +156,7 @@ class AddBill extends Component {
                             <Text style={styles.dateText}>{String(this.state.date)}</Text>
                             <View style={styles.addContainerCenter}>
                                 {this.state.showError === true ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
-                                <TouchableOpacity style={common.circle} onPress={() => this.handleSubmit()}>
+                                <TouchableOpacity style={common.circle} onPress={() => this._handleSubmit()}>
                                     <FontAwesomeIcon
                                         style={common.icon}
                                         size={24}
