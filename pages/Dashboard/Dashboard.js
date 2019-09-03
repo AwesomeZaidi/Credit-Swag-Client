@@ -11,22 +11,21 @@ import {
     Button,
     Modal
 } from 'react-native';
-import { getTransactions, getBalanceGraphData, logOut } from '../../redux/actions/index';
+import { connect } from "react-redux";
+import { getTransactions, getBalanceGraphData } from '../../redux/actions/index';
 import {
     LineChart,
-  } from 'react-native-chart-kit'
-  import { withNavigationFocus } from 'react-navigation';
-  import { Dimensions } from 'react-native'
-  const screenWidth = Dimensions.get('window').width
-import { connect } from "react-redux";
-
-import common from '../styles/common.style';
-import styles from './DashboardStyles';
-
+} from 'react-native-chart-kit'
+import { withNavigationFocus } from 'react-navigation';
+import { Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { AreaChart, Grid } from 'react-native-svg-charts'
 import  ModalWrapper from 'react-native-modal-wrapper';
 import * as shape from 'd3-shape'
+
+import common from '../styles/common.style';
+import styles from './DashboardStyles';
+
 
 // ----------------------------------------------------------------------------------
 // Dashboard Component Class
@@ -42,7 +41,8 @@ class Dashboard extends Component {
         modalOpen: false,
         billName: '',
         billAmount: '',
-        billDate: ''
+        billDate: '',
+        balanceGraphData: this.props.balanceGraphData
     }
 
     componentDidMount() {
@@ -51,12 +51,14 @@ class Dashboard extends Component {
         }
         this.props.getTransactions(this.props.user._id);
         this.props.getBalanceGraphData(this.props.user._id);
+        // this.forceUpdate()
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.isFocused !== this.props.isFocused) {
             this.setState({
-                bills: this.props.bills
+                bills: this.props.bills,
+                balanceGraphData: this.props.balanceGraphData
             })
         }
     }
@@ -98,21 +100,20 @@ class Dashboard extends Component {
     }
 
     render() {
-        
+
         if (!this.props.user) {
             this.props.navigation.navigate('Auth');
         }
-        // const balances = [ 100, 50, 100, 50, 100, 50, 100]
-        // we can start our cron job to store a queue of the weeks balances
-        // and a queue of the months balances 
+
         let values = [];
-        this.props.balanceGraphData &&
-        this.props.balanceGraphData.map((obj) => {
+        this.state.balanceGraphData &&
+        this.state.balanceGraphData.map((obj) => {
             values.push(Number(obj.value));
         });
         if (values.length > 7) {
             values = values.slice(-7)
         }
+
         return (
             <ScrollView style={common.page}>
 
@@ -123,23 +124,23 @@ class Dashboard extends Component {
                 </View>
                 <View>
                     <LineChart
-                    data={{
-                        datasets: [{
-                        data: values
-                        }]
-                    }}
-                    width={Dimensions.get('window').width} // from react-native
-                    height={220}
-                    yAxisLabel={'$'}
-                    chartConfig={{
-                        backgroundColor: '#2B2C3B',
-                        backgroundGradientFrom: '#2B2B3A',
-                        backgroundGradientTo: '#2B2B3A',
-                        color: (opacity = 0) => `rgba(123, 192, 56, ${opacity})`,
-                      style: {
-                        borderRadius: 16
-                      }
-                    }}
+                        data={{
+                            datasets: [{
+                            data: values
+                            }]
+                        }}
+                        width={Dimensions.get('window').width} // from react-native
+                        height={220}
+                        yAxisLabel={'$'}
+                        chartConfig={{
+                            backgroundColor: '#2B2C3B',
+                            backgroundGradientFrom: '#2B2B3A',
+                            backgroundGradientTo: '#2B2B3A',
+                            color: (opacity = 0) => `rgba(123, 192, 56, ${opacity})`,
+                        style: {
+                            borderRadius: 16
+                        }
+                        }}
                     // bezier
                     style={{
                       marginVertical: 8,
@@ -243,11 +244,9 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps() {
     return {
-        logOut,
         getTransactions,
         getBalanceGraphData,
     };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps())(withNavigationFocus(Dashboard));
