@@ -7,16 +7,19 @@
 import axios from 'axios';
 
 import {
-  HANDLE_LOGIN, HANDLE_SIGNUP,
-  HANDLE_LOGOUT,
-  CONNECT_BANK,
-  GET_BALANCE_AND_TRANSACTIONS,
-  GET_BALANCE_GRAPH_DATA,
+  HANDLE_LOGIN, HANDLE_SIGNUP, HANDLE_LOGOUT, CONNECT_BANK,
+  
+  GET_BALANCE_AND_TRANSACTIONS, GET_BALANCE_GRAPH_DATA,
+  
   HANDLE_ERROR, LOAD_DATA,
+  
   UPDATE_BIG_TRANSACTION_NOTIFICATION,
   UPDATE_MINIMUM_BALANCE_NOTIFICATION,
   UPDATE_OVERDRAFT_NOTIFICATION,
-  ADD_BILL,
+  
+  ADD_BILL, ADD_GOAL,
+
+  GET_SAVING_GOALS
 } from '../constants/action-types';
 
 // const baseUrl = 'https://creditswagapi.herokuapp.com/';
@@ -26,6 +29,31 @@ export const loadData = state => ({
   type: LOAD_DATA,
   payload: state,
 });
+
+export const getSavingGoals = userId => async (dispatch) => {
+  const res = await axios.post(`${baseUrl}getSavingGoals`, { userId });
+  console.log('res.data:', res.data);
+  dispatch({
+    type: GET_SAVING_GOALS,
+    payload: res.data,
+  });
+};
+
+export const addGoal = (goalData, userId) => async (dispatch) => {
+  try {
+    let res = await axios.post(`${baseUrl}addGoal`, { goalData, userId });    
+    console.log('res.data:', res.data);
+    dispatch({
+      type: ADD_GOAL,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: HANDLE_ERROR,
+      payload: err
+    });
+  };
+};
 
 export const addBill = (billData, userId) => async (dispatch) => {
   try {
@@ -132,6 +160,8 @@ export const handleLogin = user => ({
 });
 
 export function signUp(signupState, notificationToken) {
+  console.log('here');
+  
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Access-Control-Allow-Origin': '*',
@@ -139,6 +169,7 @@ export function signUp(signupState, notificationToken) {
   const data = {...signupState, notificationToken}
   return async (dispatcher) => {
     try {
+      console.log('2');      
       const res = await axios.post(`${baseUrl}signup`, data, headers);
       if (res.status === 200) {
         dispatcher(handleSignup(res.data));
