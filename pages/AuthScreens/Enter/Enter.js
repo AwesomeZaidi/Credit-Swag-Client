@@ -30,11 +30,11 @@ import * as Permissions from 'expo-permissions';
 // Enter Component Class
 // ----------------------------------------------------------------------------------
 class Enter extends Component {
-    
+
     // ------------------------------------------
     // State
     // ------------------------------------------
-    
+
     state = {
         name:'',
         username: '',
@@ -52,9 +52,6 @@ class Enter extends Component {
     // Navigation Options: title
     // ------------------------------------------
     
-    // static navigationOptions = {
-    //     title: 'Sign Up',
-    // };
     static navigationOptions = {
         header: null,
     };
@@ -76,9 +73,9 @@ class Enter extends Component {
     };
     
     // ------------------------------------------
-    // Input action functions
+    // Input functions
     // ------------------------------------------ 
-    
+
     onFocus = (type) => {
         // change this given type's state data to true
         this.setState({
@@ -170,7 +167,7 @@ class Enter extends Component {
                 contentContainerStyle={styles.wrapper}
             >
                 <KeyboardAvoidingView enabled>
-                {/* This View allows the user to toggle the login and logout tabs to show different forms. */}
+                    {/* This View allows the user to toggle the login and logout tabs to show different forms. */}
                     <View style={common.centerVerticalElements}>
                         <Text
                             onPress={() =>this.changeFormView('loginPressed')}                        
@@ -232,7 +229,7 @@ class Enter extends Component {
                                             autoCapitalize = 'none'
                                             secureTextEntry={true}
                                         />
-                                        {this.state.showError === true ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
+                                        {this.state.showError === true ? <Text style={common.errorMsg}>Email or password is wrong</Text> : null }
                                         <TouchableOpacity style={common.iconBtn} onPress={() => this.handleSubmit('signup')}>
                                             <FontAwesomeIcon
                                                 style={common.icon}
@@ -249,43 +246,43 @@ class Enter extends Component {
                                 </>
                             :
                             <>
-                            <View style={styles.form}>
-                                <TextInput
-                                    onChangeText={(text) => this.onChangeText(text, 'email')}
-                                    value={this.state.email}
-                                    style={this.state.emailFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
-                                    onFocus={ () => this.onFocus('emailFocused') }
-                                    onBlur={ () => this.onBlur('email', 'emailFocused') }
-                                    placeholder='Email'
-                                    autoCapitalize='none'
-                                    placeholderTextColor={placeholder}
-                                />
-                                <TextInput
-                                    onChangeText={(text) => this.onChangeText(text, 'password')}
-                                    value={this.state.password}
-                                    style={this.state.passwordFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
-                                    onFocus={ () => this.onFocus('passwordFocused') }
-                                    onBlur={ () => this.onBlur('password', 'passwordFocused') }
-                                    placeholder='Password'
-                                    placeholderTextColor={placeholder}
-                                    autoCapitalize = 'none'
-                                    secureTextEntry={true}
-                                />
-                                {this.state.showError === true ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
-                                <TouchableOpacity style={common.iconBtn} onPress={() => this.handleSubmit('login')}>
-                                    <FontAwesomeIcon
-                                        style={common.icon}
-                                        size={24}
-                                        icon={ faArrowRight }
+                                <View style={styles.form}>
+                                    <TextInput
+                                        onChangeText={(text) => this.onChangeText(text, 'email')}
+                                        value={this.state.email}
+                                        style={this.state.emailFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
+                                        onFocus={ () => this.onFocus('emailFocused') }
+                                        onBlur={ () => this.onBlur('email', 'emailFocused') }
+                                        placeholder='Email'
+                                        autoCapitalize='none'
+                                        placeholderTextColor={placeholder}
                                     />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={[common.centerVerticalElements, common.mw]}>
-                                <Text style={[common.text_sm, common.graytxt]}>
-                                Forgot Password.
-                                </Text>
-                            </View>
-                        </>
+                                    <TextInput
+                                        onChangeText={(text) => this.onChangeText(text, 'password')}
+                                        value={this.state.password}
+                                        style={this.state.passwordFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
+                                        onFocus={ () => this.onFocus('passwordFocused') }
+                                        onBlur={ () => this.onBlur('password', 'passwordFocused') }
+                                        placeholder='Password'
+                                        placeholderTextColor={placeholder}
+                                        autoCapitalize = 'none'
+                                        secureTextEntry={true}
+                                    />
+                                    {this.state.showError === true ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
+                                    <TouchableOpacity style={common.iconBtn} onPress={() => this.handleSubmit('login')}>
+                                        <FontAwesomeIcon
+                                            style={common.icon}
+                                            size={24}
+                                            icon={ faArrowRight }
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={[common.centerVerticalElements, common.mw]}>
+                                    <Text style={[common.text_sm, common.graytxt]}>
+                                    Forgot Password.
+                                    </Text>
+                                </View>
+                            </>
                         }
                 </KeyboardAvoidingView>
             </ScrollView>
