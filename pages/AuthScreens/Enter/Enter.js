@@ -134,7 +134,7 @@ class Enter extends Component {
         } else if (type === 'login') {
             await this.props.logIn(this.state)
             !this.props.error === true
-                ?
+                ? 
                     this.props.navigation.navigate('App')
                 :
                     this.setState({
@@ -277,11 +277,11 @@ class Enter extends Component {
                                         />
                                     </TouchableOpacity>
                                 </View>
-                                <View style={[common.centerVerticalElements, common.mw]}>
+                                {/* <View style={[common.centerVerticalElements, common.mw]}>
                                     <Text style={[common.text_sm, common.graytxt]}>
                                     Forgot Password.
                                     </Text>
-                                </View>
+                                </View> */}
                             </>
                         }
                 </KeyboardAvoidingView>
