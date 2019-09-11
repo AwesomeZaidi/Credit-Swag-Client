@@ -19,6 +19,7 @@ class AuthLoading extends React.Component {
   _bootstrapAsync = async () => {
     try {
       const stateData = await AsyncStorage.getItem('CREDIT_SWAG_STATE');  
+      console.log('stateData:', stateData);
       if (this.props.user === false) {
         this.props.navigation.navigate('Auth');
       } else {
