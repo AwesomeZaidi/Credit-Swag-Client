@@ -157,14 +157,15 @@ const Dashboard = (props) => {
                                         colors={['#C35EBF', '#9861D9', '#7662EA']}
                                         style={common.bigIcon}>
                                         <Text
-                                            onPress={() => this.setState({
-                                                modalOpen: !this.state.modalOpen,
-                                                billName: bill.name,
-                                                billAmount: bill.amount,
-                                                billDate: bill.date,
-                                        })}>
+                                        //     onPress={() => this.setState({
+                                        //         modalOpen: !this.state.modalOpen,
+                                        //         billName: bill.name,
+                                        //         billAmount: bill.amount,
+                                        //         billDate: bill.date,
+                                        // })}
+                                        >
                                             {getBillIcon(bill.category)}
-                                            
+
                                         </Text>
                                     </LinearGradient>
                                 )
@@ -182,7 +183,7 @@ const Dashboard = (props) => {
             <ModalWrapper
                 containerStyle={{ flexDirection: 'row', alignItems: 'flex-end' }}
                 style={styles.billModal}
-                onRequestClose={() => setmodalOpen(!modalOpen)}
+                onRequestClose={() => setModalOpen(!modalOpen)}
                 visible={modalOpen}>
                     <Text style={styles.modalText}>{billName}</Text>
                     <Text style={styles.modalText}>Amount: {billAmount}</Text>
