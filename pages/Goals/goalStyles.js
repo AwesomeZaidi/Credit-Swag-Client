@@ -1,15 +1,24 @@
 import { StyleSheet } from 'react-native';
 import common from '../styles/common.style';
 import {
-  secondaryBg,
-  primary,
+  bg, secondaryBg,
+  primary, secondary,
+  danger, placeholder,
+  light, purple,
   third, text,
-  inputbg,
+  inputbg, green,
+  labelText,
   inputText
 } from '../styles/variables';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
+  savingPage: {
+    backgroundColor: bg,
+      paddingLeft: 20,
+      paddingRight: 20,
+      color: '#fff'
+  },
   form: {
     marginTop: 30,
     marginBottom: 120,
@@ -24,6 +33,12 @@ const styles = StyleSheet.create({
     width: '80%',
     marginRight: 'auto',
     marginLeft: 'auto'
+  },
+  top: {
+    marginTop: -20,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   dropdown: {
     color: 'white',
@@ -83,6 +98,44 @@ const styles = StyleSheet.create({
     marginLeft: 36,
     marginRight: 36,
     marginBottom: 12,
+  },
+  item: {
+    backgroundColor: '#5a5a72',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 6,
+    paddingBottom: 6,
+    borderRadius: 6,
+  },
+  itemCat: {
+      color: text,
+      fontSize: 16
+  },
+  itemDate: {
+      color:  '#74747F',
+      fontSize: 12,
+  },
+  leftPast: {
+      display: 'flex',
+      flexDirection:  'row'
+  },
+  red: {
+      fontSize: 15,
+      color: danger
+  },
+  green: {
+      fontSize: 18,
+      color: green,
+      right: 0
+  },
+  header: {
+    textAlign: 'left'
   },
 });
 
