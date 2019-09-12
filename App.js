@@ -9,12 +9,16 @@ import { createRootNavigator,
 } from 'react-navigation';
 import { Provider } from "react-redux";
 import store from "./redux/store";
+// import { connect } from "react-redux";
+// import { clearError } from './redux/actions/index';
 
 import { YellowBox, Platform } from 'react-native';
 // YellowBox.ignoreWarnings(['Remote debugger']);
 if (__DEV__) {
 	require('react-devtools');
 }  
+// import { AsyncStorage } from 'react-native';
+
 // import axios from 'axios';
 // axios.defaults.withCredentials = true  // enable axios post cookie, default false
 
@@ -108,7 +112,7 @@ class App extends React.Component {
 	render() {
 	  return (
 		<Provider store={store}>
-		  <MainNavigator />
+			<MainNavigator />			
 		</Provider>
 	  );
 	};
