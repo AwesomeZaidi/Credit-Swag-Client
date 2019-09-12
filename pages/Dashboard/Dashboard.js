@@ -155,7 +155,7 @@ const Dashboard = (props) => {
                                     <LinearGradient 
                                         key={index}     
                                         colors={['#C35EBF', '#9861D9', '#7662EA']}
-                                        style={common.bigIcon}> */}
+                                        style={common.bigIcon}>
                                         <Text
                                             onPress={() => this.setState({
                                                 modalOpen: !this.state.modalOpen,
@@ -164,6 +164,7 @@ const Dashboard = (props) => {
                                                 billDate: bill.date,
                                         })}>
                                             {getBillIcon(bill.category)}
+                                            
                                         </Text>
                                     </LinearGradient>
                                 )
