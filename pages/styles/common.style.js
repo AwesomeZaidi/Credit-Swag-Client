@@ -10,7 +10,8 @@ import {
     third,
     labelText,
     text,
-    inputText
+    inputText,
+    green
   } from './variables';
   import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -30,6 +31,9 @@ export default StyleSheet.create({
         textAlign: 'center',
         // marginLeft: 20,
         // marginRight: 20
+    },
+    textLeft: {
+        textAlign: 'left'
     },
     iconrow: {
         // display: 'flex',
@@ -71,6 +75,30 @@ export default StyleSheet.create({
     graytxt: {
         color: labelText
     },
+    text_label_gray: {
+        fontSize: 16,
+        textAlign: 'center',
+        color: text,
+        color: labelText
+    },
+    text_label_green: {
+        fontSize: 16,
+        textAlign: 'center',
+        color: text,
+        color: green 
+    },
+    text_label_red: {
+        fontSize: 16,
+        textAlign: 'center',
+        color: text,
+        color: danger  
+    },
+    text_label_white: {
+        fontSize: 16,
+        textAlign: 'center',
+        color: text,
+        color: '#E5E5E5'       
+    },
     //#TODO: refactor this
     titleActive: {
         marginLeft: 20,
@@ -81,7 +109,22 @@ export default StyleSheet.create({
         // display: 'inline-block',
         color: text
     },
-
+    spaced_row_line: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomColor: labelText,
+        paddingBottom: 14,
+        marginBottom: 14,
+        borderBottomWidth: .8,
+    },
+    spaced_row: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingBottom: 14,
+        marginBottom: 14,
+    },
     titleUnactive: {
         marginLeft: 20,
         marginRight: 20,
