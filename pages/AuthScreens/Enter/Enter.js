@@ -11,10 +11,12 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    Button,
+    AsyncStorage
 } from 'react-native';
 
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { signUp, logIn, logOut } from "../../../redux/actions/index";
 import common from '../../styles/common.style';
@@ -29,265 +31,235 @@ import * as Permissions from 'expo-permissions';
 // ----------------------------------------------------------------------------------
 // Enter Component Class
 // ----------------------------------------------------------------------------------
-class Enter extends Component {
+const Enter = (props) => {
+    console.log('in Enter');
+    const [error, setError] = useState({...props.error});
+    // const [user, setUser] = useState(props.user);
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [nameFocused, setNameFocused] = useState(false);
+    const [emailFocused, setEmailFocused] = useState(false);
+    const [usernameFocused, setUsernameFocused] = useState(false);
+    const [password, setPassword] = useState('');
+    const [passwordFocused, setPasswordFocused] = useState(false);
+    const [loginShow, setLoginShow] = useState(false);
+    const [signupShow, setSignupShow] = useState(true);
+    const [showError, setShowError] = useState(false);
+    const [loginPressed, setLoginPressed] = useState(false);
+    const [signupPressed, setSignupPressed] = useState(false);
 
-    // ------------------------------------------
-    // State
-    // ------------------------------------------
-
-    state = {
-        name:'',
-        username: '',
-        email: '',
-        password: '',
-        emailFocused: false,
-        usernameFocused: false,
-        passwordFocused: false,
-
-        loginShow: false,
-        signupShow: true
-    };
-
-    // ------------------------------------------
-    // Navigation Options: title
-    // ------------------------------------------
-    
-    static navigationOptions = {
-        header: null,
-    };
-
-    componentDidMount() {
-        if (!this.props.user == false) {       
-            return this.props.navigation.navigate('App')
+    useEffect(() => {
+        if (!props.user == false) {       
+            return props.navigation.navigate('App')
         }
-    }
+    }, []);
 
-    // ------------------------------------------
-    // Update state on text change
-    // ------------------------------------------
+    React.useEffect(() => {
+        setError(props.error);
+    }, [props.error])
     
-    onChangeText = (text, feildName) => {
-        this.setState({
-            [feildName]: text
-        });
-    };
-    
-    // ------------------------------------------
-    // Input functions
-    // ------------------------------------------ 
+    // useEffect(() => {  
+    //     setUser(props.user)
+    // }, [props.user]);
 
-    onFocus = (type) => {
-        // change this given type's state data to true
-        this.setState({
-            [type]: true
-        });
-    };
-
-    onBlur = (feildName, type) => {
-        // if the input field is empty, change its focus state to false.
-        !this.state[feildName] ?
-            this.setState({
-                [type]: false
-            })
-        :
-        null
-    };
-
-    // --------------------------------------------------------
-    // signUp redux action handler function attached to props. 
-    // --------------------------------------------------------
     handleSubmit = async (type) => {
         if (type === 'signup') {
-
-            // Step 1: Notifications permissions.
-            const { status: existingStatus } = await Permissions.getAsync(
-                Permissions.NOTIFICATIONS
-            );
-            let finalStatus = existingStatus;
-            
-            // only ask if permissions have not already been determined, because
-            // iOS won't necessarily prompt the user a second time.
-            if (existingStatus !== 'granted') {
-                // Android remote notification permissions are granted during the app
-                // install, so this will only ask on iOS
-                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-                finalStatus = status;
+            if (!signupPressed) {
+                setSignupPressed(true);
+                // Step 1: Notifications permissions.
+                const { status: existingStatus } = await Permissions.getAsync(
+                    Permissions.NOTIFICATIONS
+                );
+                let finalStatus = existingStatus;
+                
+                // only ask if permissions have not already been determined, because
+                // iOS won't necessarily prompt the user a second time.
+                if (existingStatus !== 'granted') {
+                    // Android remote notification permissions are granted during the app
+                    // install, so this will only ask on iOS
+                    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+                    finalStatus = status;
+                }
+                
+                // Stop here if the user did not grant permissions
+                if (finalStatus !== 'granted') {
+                    return;
+                }
+                
+                // Get the token that uniquely identifies this device
+                let notificationToken = await Notifications.getExpoPushTokenAsync();
+                // Step 2 signup api call
+                await props.signUp({name, email, username, password}, notificationToken);
+                let stateData = await AsyncStorage.getItem('CREDIT_SWAG_STATE');  
+                stateData = JSON.parse(stateData);
+                setSignupPressed(false);
+                stateData.error == true
+                    ?
+                        setShowError(true)
+                    :
+                        props.navigation.navigate('Connect')
             }
-            
-            // Stop here if the user did not grant permissions
-            if (finalStatus !== 'granted') {
-                return;
-            }
-            
-            // Get the token that uniquely identifies this device
-            let notificationToken = await Notifications.getExpoPushTokenAsync();
-            // Step 2 signup api call
-            await this.props.signUp(this.state, notificationToken)
-            
-            !this.props.error === true
-                ?
-                    this.props.navigation.navigate('Connect')
-                :
-                    this.setState({
-                        showError: true
-                    })
         } else if (type === 'login') {
-            await this.props.logIn(this.state)
-            !this.props.error === true
-                ? 
-                    this.props.navigation.navigate('App')
-                :
-                    this.setState({
-                        showError: true
-                    })
-        }
+            if (!loginPressed) {
+                setLoginPressed(true);
+                await props.logIn({email, password});
+                let stateData = await AsyncStorage.getItem('CREDIT_SWAG_STATE');  
+                stateData = JSON.parse(stateData);
+                setLoginPressed(false);
+                stateData.error == true
+                    ?
+                        setShowError(true)
+                    :
+                        props.navigation.navigate('App')
+            };
+        };
     };
 
-    // On Signup or Login Tab button presses, update state to
-    // swap active style and swag form comp.
     changeFormView = (txtPressed) => {
         if (txtPressed === 'signupPressed') {
-            this.setState({
-                loginShow: false,
-                signupShow: true
-            })
+            setLoginShow(false)
+            setSignupShow(true)
+            setSignupPressed(false)
         } else {
-            this.setState({
-                loginShow: true,
-                signupShow: false
-            })   
+            setLoginShow(true)
+            setSignupShow(false)
+            setLoginPressed(false)
         }
     }
-
-    render() {      
-        return (
-            <ScrollView
-                style={common.page}
-                keyboardShouldPersistTaps='handled'
-                contentContainerStyle={styles.wrapper}
-            >
-                <KeyboardAvoidingView enabled>
-                    {/* This View allows the user to toggle the login and logout tabs to show different forms. */}
-                    <View style={common.centerVerticalElements}>
-                        <Text
-                            onPress={() =>this.changeFormView('loginPressed')}                        
-                            style={this.state.loginShow === true
-                            ? common.titleActive : common.titleUnactive}>
-                            Login
-                        </Text>
-                        <Text
-                            onPress={() => this.changeFormView('signupPressed')}
-                            style={this.state.signupShow === true  ?
-                            common.titleActive : common.titleUnactive}>
-                            Signup
-                        </Text>
-                    </View>
-                        {
-                            (this.state.signupShow === true) ?
-                                // Shows the signup form or login form based on the state that gets updated above or set by default.
-                                <>
-                                    <View style={styles.form}>
-                                        <TextInput
-                                            onChangeText={(text) => this.onChangeText(text, 'name')}
-                                            value={this.state.name}
-                                            style={this.state.nameFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
-                                            onFocus={ () => this.onFocus('nameFocused') }
-                                            onBlur={ () => this.onBlur('name', 'nameFocused') }
-                                            placeholder='Full Name'
-                                            placeholderTextColor={placeholder}
-                                            autoCapitalize='none'
-                                        />
-                                        <TextInput
-                                            onChangeText={(text) => this.onChangeText(text, 'username')}
-                                            value={this.state.username}
-                                            style={this.state.usernameFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
-                                            onFocus={ () => this.onFocus('usernameFocused') }
-                                            onBlur={ () => this.onBlur('username', 'usernameFocused') }
-                                            placeholder='Username'
-                                            autoCapitalize='none'
-                                            placeholderTextColor={placeholder}
-                                        />
-                                        <TextInput
-                                            onChangeText={(text) => this.onChangeText(text, 'email')}
-                                            value={this.state.email}
-                                            style={this.state.emailFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
-                                            onFocus={ () => this.onFocus('emailFocused') }
-                                            onBlur={ () => this.onBlur('email', 'emailFocused') }
-                                            placeholder='Email Address'
-                                            placeholderTextColor={placeholder}
-                                            autoCapitalize='none'
-                                            keyboardType='email-address'
-                                        />
-                                        <TextInput
-                                            onChangeText={(text) => this.onChangeText(text, 'password')}
-                                            value={this.state.password}
-                                            style={this.state.passwordFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
-                                            onFocus={ () => this.onFocus('passwordFocused') }
-                                            onBlur={ () => this.onBlur('password', 'passwordFocused') }
-                                            placeholder='Password'
-                                            placeholderTextColor={placeholder}
-                                            autoCapitalize = 'none'
-                                            secureTextEntry={true}
-                                        />
-                                        {this.state.showError === true ? <Text style={common.errorMsg}>Email or password is wrong</Text> : null }
-                                        <TouchableOpacity style={common.iconBtn} onPress={() => this.handleSubmit('signup')}>
-                                            <FontAwesomeIcon
-                                                style={common.icon}
-                                                size={24}
-                                                icon={ faArrowRight } 
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={[common.centerVerticalElements, common.mw]}>
-                                        <Text style={[common.text_sm, common.graytxt]}>
-                                        By Signing Up, you Agree to the Terms and Conditions of the app.
-                                        </Text>
-                                    </View>
-                                </>
-                            :
+   
+    return (
+        
+        <ScrollView
+            style={common.page}
+            keyboardShouldPersistTaps='handled'
+            contentContainerStyle={styles.wrapper}
+        >
+            <KeyboardAvoidingView enabled>
+                {/* This View allows the user to toggle the login and logout tabs to show different forms. */}
+                <View style={common.centerVerticalElements}>
+                    <Text
+                        onPress={() =>changeFormView('loginPressed')}                        
+                        style={loginShow === true
+                        ? common.titleActive : common.titleUnactive}>
+                        Login
+                    </Text>
+                    <Text
+                        onPress={() => changeFormView('signupPressed')}
+                        style={signupShow === true  ?
+                        common.titleActive : common.titleUnactive}>
+                        Signup
+                    </Text>
+                </View>
+                    {
+                        (signupShow === true) ?
+                            // Shows the signup form or login form based on the state that gets updated above or set by default.
                             <>
                                 <View style={styles.form}>
                                     <TextInput
-                                        onChangeText={(text) => this.onChangeText(text, 'email')}
-                                        value={this.state.email}
-                                        style={this.state.emailFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
-                                        onFocus={ () => this.onFocus('emailFocused') }
-                                        onBlur={ () => this.onBlur('email', 'emailFocused') }
-                                        placeholder='Email'
+                                        onChangeText={(text) => setName(text)}
+                                        value={name}
+                                        style={nameFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
+                                        onFocus={ () => setNameFocused(true) }
+                                        onBlur={ () => setNameFocused(false) }
+                                        placeholder='Full Name'
+                                        placeholderTextColor={placeholder}
+                                        autoCapitalize='none'
+                                    />
+                                    <TextInput
+                                        onChangeText={(text) => setUsername(text)}
+                                        value={username}
+                                        style={usernameFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
+                                        onFocus={ () => setUsernameFocused(true) }
+                                        onBlur={ () => setUsernameFocused(false) }
+                                        placeholder='Username'
                                         autoCapitalize='none'
                                         placeholderTextColor={placeholder}
                                     />
                                     <TextInput
-                                        onChangeText={(text) => this.onChangeText(text, 'password')}
-                                        value={this.state.password}
-                                        style={this.state.passwordFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
-                                        onFocus={ () => this.onFocus('passwordFocused') }
-                                        onBlur={ () => this.onBlur('password', 'passwordFocused') }
+                                        onChangeText={(text) => setEmail(text)}
+                                        value={email}
+                                        style={emailFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
+                                        onFocus={ () => setEmailFocused(true) }
+                                        onBlur={ () => setEmailFocused(false) }
+                                        placeholder='Email Address'
+                                        placeholderTextColor={placeholder}
+                                        autoCapitalize='none'
+                                        keyboardType='email-address'
+                                    />
+                                    <TextInput
+                                        onChangeText={(text) => setPassword(text)}
+                                        value={password}
+                                        style={passwordFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
+                                        onFocus={ () => setPasswordFocused(true) }
+                                        onBlur={ () => setPasswordFocused(false) }
                                         placeholder='Password'
                                         placeholderTextColor={placeholder}
                                         autoCapitalize = 'none'
                                         secureTextEntry={true}
                                     />
-                                    {this.state.showError === true ? <Text style={common.errorMsg}>Something went wrong</Text> : null }
-                                    <TouchableOpacity style={common.iconBtn} onPress={() => this.handleSubmit('login')}>
+                                    {props.error === true ? <Text style={common.errorMsg}>Email or password is wrong</Text> : null }
+                                    <TouchableOpacity style={common.iconBtn} onPress={() => handleSubmit('signup')}>
                                         <FontAwesomeIcon
                                             style={common.icon}
                                             size={24}
-                                            icon={ faArrowRight }
+                                            icon={ faArrowRight } 
                                         />
                                     </TouchableOpacity>
                                 </View>
-                                {/* <View style={[common.centerVerticalElements, common.mw]}>
+                                <View style={[common.centerVerticalElements, common.mw]}>
                                     <Text style={[common.text_sm, common.graytxt]}>
-                                    Forgot Password.
+                                    By Signing Up, you Agree to the Terms and Conditions of the app.
                                     </Text>
-                                </View> */}
+                                </View>
                             </>
-                        }
-                </KeyboardAvoidingView>
-            </ScrollView>
-        );
-    };
+                        :
+                        <>
+                            <View style={styles.form}>
+                                <TextInput
+                                    onChangeText={(text) => setEmail(text)}
+                                    value={email}
+                                    style={emailFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
+                                    onFocus={ () => setEmailFocused(true) }
+                                    onBlur={ () => setEmailFocused(false) }
+                                    placeholder='Email'
+                                    autoCapitalize='none'
+                                    placeholderTextColor={placeholder}
+                                />
+                                <TextInput
+                                    onChangeText={(text) => setPassword(text)}
+                                    value={password}
+                                    style={passwordFocused ? [styles.input, styles.inputFieldFocus] : [styles.input, styles.inputFieldBlur]}
+                                    onFocus={ () => setPasswordFocused(true) }
+                                    onBlur={ () => setPasswordFocused(false) }
+                                    placeholder='Password'
+                                    placeholderTextColor={placeholder}
+                                    autoCapitalize = 'none'
+                                    secureTextEntry={true}
+                                />
+                                {props.error === true && <Text style={common.errorMsg}>Something went wrong</Text> }
+                                <TouchableOpacity style={common.iconBtn} onPress={() => handleSubmit('login')}>
+                                    <FontAwesomeIcon
+                                        style={common.icon}
+                                        size={24}
+                                        icon={ faArrowRight }
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            {/* <View style={[common.centerVerticalElements, common.mw]}>
+                                <Text style={[common.text_sm, common.graytxt]}>
+                                Forgot Password.
+                                </Text>
+                            </View> */}
+                        </>
+                    }
+            </KeyboardAvoidingView>
+        </ScrollView>
+    );
+};
+
+Enter.navigationOptions = {
+    header: null,
 };
 
 const mapStateToProps = state => {
