@@ -38,13 +38,11 @@ class Settings extends Component {
                             <Text style={[common.text_label_white, common.textLeft]}>
                                 Update Profile
                             </Text>
-                            <Text style={[common.text_label_white, common.textLeft]}>
                             <FontAwesomeIcon
-                                style={styles.icon}
+                                style={common.settingIcon}
                                 size={16}
                                 icon={ faArrowRight } 
                             />
-                            </Text>
                         </View>
                     </TouchableHighlight>
 
@@ -55,13 +53,11 @@ class Settings extends Component {
                             <Text style={[common.text_label_white, common.textLeft]}>
                                 Update Notifications
                             </Text>
-                            <Text style={[common.text_label_white, common.textLeft]}>
                             <FontAwesomeIcon
-                                style={styles.icon}
+                                style={common.settingIcon}
                                 size={16}
                                 icon={ faArrowRight } 
                             />
-                            </Text>
                         </View>                    
                     </TouchableHighlight>
                 </View>
