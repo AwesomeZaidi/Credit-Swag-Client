@@ -13,7 +13,13 @@ import { overdraftNotification, minimumBalanceNotification, bigTransactionNotifi
 const Notifications = (props) => {
     const [overdraftNotification, setOverdraftNotification] = useState(props.user.overdraftNotification) //  bool
     const [minimumBalanceNotification, setMinimumBalanceNotification] = useState(props.user.minimumBalanceNotification)
-    const [bigTransactionNotification, setBigTransactionNotification] = useState(props.user.minimumBalanceNotification)
+    const [bigTransactionNotification, setBigTransactionNotification] = useState(props.user.bigTransactionNotification)
+
+    useEffect(() => {
+        setOverdraftNotification(props.user.overdraftNotification);
+        setBigTransactionNotification(props.user.minimumBalanceNotification);
+        setBigTransactionNotification(props.user.bigTransactionNotification)
+    }, [])
 
     toggleSwitch = (notificationSetting, notificationOnOrOff) => {
         switch(notificationSetting) {

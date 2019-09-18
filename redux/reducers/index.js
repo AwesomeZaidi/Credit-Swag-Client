@@ -30,7 +30,7 @@ function rootReducer(state = initialState, action) {
       return action.payload
     case HANDLE_LOGIN: 
       return {...state, user: action.payload, error: false}
-    case HANDLE_SIGNUP:    
+    case HANDLE_SIGNUP:
       return {...state, user: action.payload, error: false}
     case HANDLE_ERROR:
       return {...state, error: action.payload}
@@ -64,7 +64,6 @@ function rootReducer(state = initialState, action) {
       return {...state, user: userUpdatedBigTransactionNotification, error: false}
     case ADD_BILL:
       state.bills.push(action.payload);
-      console.log('bill added');      
       return {...state, bills: state.bills, error: false}
     case ADD_GOAL_UPDATE_USER:
       state.goals.push(action.payload.goal);
