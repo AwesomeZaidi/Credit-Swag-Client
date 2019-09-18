@@ -35,6 +35,13 @@ export default StyleSheet.create({
     textLeft: {
         textAlign: 'left'
     },
+    settingIcon: {
+        textAlign: 'left',
+        fontSize: 16,
+        textAlign: 'center',
+        color: text,
+        color: '#E5E5E5'  
+    },
     iconrow: {
         // display: 'flex',
         // flexDirection: 'row',
@@ -90,7 +97,6 @@ export default StyleSheet.create({
     text_label_red: {
         fontSize: 16,
         textAlign: 'center',
-        color: text,
         color: danger  
     },
     text_label_white: {
