@@ -57,6 +57,7 @@ class Goals extends Component {
                                     <View>
                                         <Text style={styles.goalName}>{goal.name}</Text>
                                         <Text style={common.h1_primary}>{goal.limit}</Text>
+                                        {/* Need too make a fetch call to update this value. */}
                                         <Text style={styles.currentAmount}>Spent: {goal.health}</Text>
                                     </View>
                                 </TouchableHighlight>
