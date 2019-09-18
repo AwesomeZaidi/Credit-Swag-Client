@@ -31,7 +31,7 @@ import styles from './DashboardStyles';
 // ----------------------------------------------------------------------------------
 
 const Dashboard = (props) => {
-
+    
     const [user, setUser] = useState(props.user);
     const [balanceGraphData, setBalanceGraphData] = useState(false);
     const [bills, setBills] = useState(props.bills);
@@ -40,7 +40,7 @@ const Dashboard = (props) => {
     const [billAmount, setBillAmount] = useState('');
     const [billDate, setBillDate] = useState('');
     
-    useEffect(() => {        
+    useEffect(() => {   
         props.getTransactions(props.user._id)
         props.getBalanceGraphData(props.user._id)
     }, []);
@@ -50,7 +50,6 @@ const Dashboard = (props) => {
     }, [props.user]);
 
     useEffect(() => {
-        console.log('bills changed');
         setBills(props.bills)
     }, [props.bills]);
 
@@ -90,16 +89,27 @@ const Dashboard = (props) => {
         }
     }
 
-    let values = [];
-    balanceGraphData &&
-    balanceGraphData.map((obj) => {
-        values.push(Number(obj.value));
-    });
-    if (values.length > 7) {
-        values = values.slice(-7)
+    const showBillModal =(bill) => {
+        setModalOpen(modalOpen)
+        setBillName(bill.name)
+        setBillAmount(bill.amount)
+        setBillDate(bill.date)
     }
 
-    console.log('before return');
+    // a temp state, rerender happens so fast user won't really even see this most of the time. 
+    // Need an arr of values here otherwise Android yells.
+    let values = [0,10,30];
+    if (balanceGraphData) {
+        values = []
+        balanceGraphData.map((obj) => {
+            values.push(Number(obj.value));
+        });
+    };
+
+    if (values.length > 7) {
+        values = values.slice(-7)
+    };
+
     return (
         
         <ScrollView style={common.page}>
@@ -157,12 +167,7 @@ const Dashboard = (props) => {
                                         colors={['#C35EBF', '#9861D9', '#7662EA']}
                                         style={common.bigIcon}>
                                         <Text
-                                        //     onPress={() => this.setState({
-                                        //         modalOpen: !this.state.modalOpen,
-                                        //         billName: bill.name,
-                                        //         billAmount: bill.amount,
-                                        //         billDate: bill.date,
-                                        // })}
+                                            onPress={() => showBillModal(bill)}
                                         >
                                             {getBillIcon(bill.category)}
 
