@@ -32,7 +32,6 @@ import * as Permissions from 'expo-permissions';
 // Enter Component Class
 // ----------------------------------------------------------------------------------
 const Enter = (props) => {
-    console.log('in Enter');
     const [error, setError] = useState({...props.error});
     // const [user, setUser] = useState(props.user);
     const [name, setName] = useState('');
