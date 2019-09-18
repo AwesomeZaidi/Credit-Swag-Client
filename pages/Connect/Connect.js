@@ -3,16 +3,11 @@
 // Imports
 // ----------------------------------------------------------------------------------
 import React, { Component } from 'react';
-import {
-    Text,
-    ScrollView,
-    Button,
-    View
-} from 'react-native';
+import { Button } from 'react-native-elements';
 
 import PlaidAuthenticator from 'react-native-plaid-link';
-import { connectBank } from '../../redux/actions/index';
-import common from '../styles/common.style';
+import { logOut, connectBank } from '../../redux/actions/index';
+// import { connectBank } from '../../redux/actions/index';
 import { connect } from "react-redux";
 
 class Connect extends Component {
@@ -32,13 +27,19 @@ class Connect extends Component {
         header: null,
     }; 
 
+    _signOutAsync = async () => {
+        this.props.logOut();
+        this.props.navigation.navigate('Auth');
+    };
+
     render() {
         return (
             <>  
+                <Button onPress={() => this._signOutAsync()} title='Logout'/>
                 <PlaidAuthenticator
                     onMessage={this._onMessage}
-                    publicKey="e7325291c9f6c0bdb72a3829865923"
-                    env="sandbox"
+                    publicKey="f04faf8b95bc5d5e0357791a52b40c"
+                    env="development"
                     product="auth,transactions"
                     clientName="Credit Swag"
                     selectAccount={false}
@@ -65,6 +66,7 @@ const mapStateToProps = state => {
 function mapDispatchToProps() {
     return {
         connectBank,
+        logOut,
     };
 };
 
