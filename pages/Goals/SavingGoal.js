@@ -42,7 +42,7 @@ const SavingGoal = (props) => {
         <ScrollView style={[common.page, styles.savingPage]}>
             <View style={styles.top}>
                 <Text style={[common.h1_primary]}>Saving Goal</Text>
-                <Text style={common.text_sm}>Edit</Text>
+                {/* <Text style={common.text_sm}>Edit</Text> */}
             </View>
             <View>
                 <Text style={[common.text_label_gray, common.pushOffUp, styles.header]}>{goal.name}</Text>
@@ -53,19 +53,21 @@ const SavingGoal = (props) => {
             <Text style={[common.h1_primary, common.pushOffUp, styles.header, common.pushOffDown]}>Summary</Text>
             <View style={common.spaced_row_line}>
                 <Text style={common.text_label_gray}>spent: </Text>
-                <Text style={common.text_label_white}>{goal.health}</Text>
+                <Text style={common.text_label_white}>${goal.health}</Text>
             </View>
             <View style={common.spaced_row_line}>
                 <Text style={common.text_label_gray}>limit: </Text>
-                <Text style={common.text_label_white}>{goal.limit}</Text>
+                <Text style={common.text_label_white}>${goal.limit}</Text>
             </View>
             <View style={common.spaced_row}>
                 <Text style={common.text_label_gray}>net: </Text>
-                <Text style={goal.limit - goal.health >= 0 ? common.text_label_green : styles.common.text_label_red}>
+                
+                <Text style={goal.limit - goal.health >= 0 ? common.text_label_green : common.text_label_red}>
                     { goal.limit - goal.health >= 0 ?
-                        `+ ${goal.limit - goal.health}`
+                        `+ ${(goal.limit - goal.health).toFixed(2)}`
                         :
-                        `- ${ goal.limit - goal.health}` }
+                        `${(goal.limit - goal.health).toFixed(2)}`
+                    }
                 </Text>
             </View>
 
