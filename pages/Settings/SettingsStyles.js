@@ -23,6 +23,13 @@ export default StyleSheet.create({
     settingTitle: {
         marginTop: 30,
     },
+    settingText: {
+        fontSize: 16,
+        textAlign: 'left',
+        color: text,
+        color: labelText,
+        marginBottom: 18
+    },
     centerText: {
         textAlign: 'center'
     },
