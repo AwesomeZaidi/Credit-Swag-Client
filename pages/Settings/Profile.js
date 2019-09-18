@@ -43,12 +43,11 @@ class Profile extends Component {
                         rounded
                         title="MT"
                     />
-                    {/* <Text style={[common.h1_primary, styles.topName]}>Timofey Makhlay</Text>  */}
                 </View>
                 <View style={styles.bottom}>
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Name</Text>
-                        <Text style={styles.text}>Timofey Mikhael</Text> 
+                        <Text style={styles.text}>{this.props.user.name}</Text> 
                     </View>
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Email</Text>
