@@ -13,16 +13,15 @@ import {
   
   HANDLE_ERROR, CLEAR_ERROR, LOAD_DATA, SET_ERROR,
   
+  UPDATE_OVERDRAFT_NOTIFICATION,
   UPDATE_BIG_TRANSACTION_NOTIFICATION,
   UPDATE_MINIMUM_BALANCE_NOTIFICATION,
-  UPDATE_OVERDRAFT_NOTIFICATION,
-  
   ADD_BILL, ADD_GOAL_UPDATE_USER, FETCH_GOAL_UPDATE_USER,
   GET_USER
 } from '../constants/action-types';
 
 // const baseUrl = 'https://creditswagapi.herokuapp.com/';
-const baseUrl = 'https://3165f7c5.ngrok.io/';
+const baseUrl = 'https://creditswagapi.herokuapp.com/';
 
 export const loadData = state => ({
   type: LOAD_DATA,
