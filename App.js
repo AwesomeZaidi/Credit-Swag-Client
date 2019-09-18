@@ -79,12 +79,12 @@ const MainNavigator = createAppContainer(createSwitchNavigator(
 					let IconComponent = Ionicons;
 					let iconName;
 					if (routeName === 'Dashboard') {
-					  iconName = Platform.OS === "ios" ? "ios-home" : "md-home";
-					} else if (routeName === 'Goals') {
-						iconName = Platform.OS === "ios" ? "ios-cash" : "md-cash";
-					} else if (routeName === 'Settings') {
-						iconName = Platform.OS === "ios" ? "ios-menu" : "md-menu";
-					}
+						iconName = Platform.OS === "ios" ? "ios-home" : "md-home";
+					  } else if (routeName === 'Goals') {
+						  iconName = Platform.OS === "ios" ? "ios-cash" : "md-cash";
+					  } else if (routeName === 'Settings') {
+						  iconName = Platform.OS === "ios" ? "ios-menu" : "md-menu";
+					  }
 					// You can return any component that you like here!
 					return <IconComponent name={iconName} size={25} color={tintColor} />;
 				  },
@@ -109,7 +109,7 @@ const MainNavigator = createAppContainer(createSwitchNavigator(
 ));
 
 class App extends React.Component {
-	render() {
+	render() {	
 	  return (
 		<Provider store={store}>
 			<MainNavigator />			
