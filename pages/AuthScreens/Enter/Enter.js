@@ -63,11 +63,8 @@ const Enter = (props) => {
     // }, [props.user]);
 
     handleSubmit = async (type) => {
-        console.log('in submit');        
         if (type === 'signup') {
             if (!signupPressed) {
-                console.log('in first if');
-                
                 setSignupPressed(true);
                 // Step 1: Notifications permissions.
                 const { status: existingStatus } = await Permissions.getAsync(
@@ -102,7 +99,6 @@ const Enter = (props) => {
                     :
                         props.navigation.navigate('Connect')
             } else {
-                console.log('in second if');
                 setSignupPressed(false);
                 // Step 1: Notifications permissions.
                 const { status: existingStatus } = await Permissions.getAsync(
