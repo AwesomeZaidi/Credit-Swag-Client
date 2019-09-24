@@ -41,7 +41,7 @@ class Profile extends Component {
                         style={styles.profilePic}
                         size="large"
                         rounded
-                        title="MT"
+                        title="AZ"
                     />
                 </View>
                 <View style={styles.bottom}>
@@ -53,10 +53,6 @@ class Profile extends Component {
                         <Text style={styles.label}>Email</Text>
                         <Text style={styles.text}>{this.props.user.email}</Text> 
                     </View> 
-                    <View style={styles.formGroup}>
-                        <Text style={styles.label}>Number</Text>
-                        <Text style={styles.text}>+1 630-407-7258</Text> 
-                    </View>
 
                     <Button style={common.h1_primary} onPress={() => this._signOutAsync()} title='Logout'/>
 

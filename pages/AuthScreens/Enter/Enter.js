@@ -63,8 +63,11 @@ const Enter = (props) => {
     // }, [props.user]);
 
     handleSubmit = async (type) => {
+        console.log('in submit');        
         if (type === 'signup') {
             if (!signupPressed) {
+                console.log('in first if');
+                
                 setSignupPressed(true);
                 // Step 1: Notifications permissions.
                 const { status: existingStatus } = await Permissions.getAsync(
@@ -82,9 +85,44 @@ const Enter = (props) => {
                 }
                 
                 // Stop here if the user did not grant permissions
-                if (finalStatus !== 'granted') {
-                    return;
+                // if (finalStatus !== 'granted') {
+                //     return;
+                // }
+                
+                // Get the token that uniquely identifies this device
+                let notificationToken = await Notifications.getExpoPushTokenAsync();
+                // Step 2 signup api call
+                await props.signUp({name, email, username, password}, notificationToken);
+                let stateData = await AsyncStorage.getItem('CREDIT_SWAG_STATE');  
+                stateData = JSON.parse(stateData);
+                setSignupPressed(false);
+                stateData.error == true
+                    ?
+                        setShowError(true)
+                    :
+                        props.navigation.navigate('Connect')
+            } else {
+                console.log('in second if');
+                setSignupPressed(false);
+                // Step 1: Notifications permissions.
+                const { status: existingStatus } = await Permissions.getAsync(
+                    Permissions.NOTIFICATIONS
+                );
+                let finalStatus = existingStatus;
+                
+                // only ask if permissions have not already been determined, because
+                // iOS won't necessarily prompt the user a second time.
+                if (existingStatus !== 'granted') {
+                    // Android remote notification permissions are granted during the app
+                    // install, so this will only ask on iOS
+                    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+                    finalStatus = status;
                 }
+                
+                // Stop here if the user did not grant permissions
+                // if (finalStatus !== 'granted') {
+                //     return;
+                // }
                 
                 // Get the token that uniquely identifies this device
                 let notificationToken = await Notifications.getExpoPushTokenAsync();
