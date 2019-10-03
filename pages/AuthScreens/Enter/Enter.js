@@ -63,6 +63,7 @@ const Enter = (props) => {
     // }, [props.user]);
 
     handleSubmit = async (type) => {
+        console.log("HANDLING SUBMIT")
         if (type === 'signup') {
             if (!signupPressed) {
                 setSignupPressed(true);
@@ -71,10 +72,11 @@ const Enter = (props) => {
                     Permissions.NOTIFICATIONS
                 );
                 let finalStatus = existingStatus;
-                
+                console.log("signing up...")
                 // only ask if permissions have not already been determined, because
                 // iOS won't necessarily prompt the user a second time.
                 if (existingStatus !== 'granted') {
+                    console.log("HELOOOO GRANTY")
                     // Android remote notification permissions are granted during the app
                     // install, so this will only ask on iOS
                     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
@@ -85,19 +87,28 @@ const Enter = (props) => {
                 // if (finalStatus !== 'granted') {
                 //     return;
                 // }
-                
+                console.log("DID I FUCK UP HERE THO?")
                 // Get the token that uniquely identifies this device
-                let notificationToken = await Notifications.getExpoPushTokenAsync();
+                // let notificationToken = await Notifications.getExpoPushTokenAsync();
+                let notificationToken = ''
                 // Step 2 signup api call
-                await props.signUp({name, email, username, password}, notificationToken);
+                console.log("STUCK HERE?")
+                await signUp({name, email, username, password}, notificationToken);
+                console.log("OR AM I NOT WORKING?")
                 let stateData = await AsyncStorage.getItem('CREDIT_SWAG_STATE');  
+                console.log("MAYBE I JUST SUCK THO?")
                 stateData = JSON.parse(stateData);
+                console.log("PARSY PARSY")
                 setSignupPressed(false);
-                stateData.error == true
-                    ?
-                        setShowError(true)
-                    :
-                        props.navigation.navigate('Connect')
+                console.log("WHY THO")
+                props.navigation.navigate('Connect')
+                // if (stateData.error == true) {
+                //     console.log(stateData.error)
+                //     setShowError(true)
+                // } else {
+                //     console.log("NAVIGATING")
+                //     props.navigation.navigate('Connect')
+                // }
             } else {
                 setSignupPressed(false);
                 // Step 1: Notifications permissions.

@@ -37,7 +37,7 @@ function rootReducer(state = initialState, action) {
     case CLEAR_ERROR:
         return {...state, error: false}
     case SET_ERROR:
-      return {...state, error: true}
+      return {...state, error: true }
     case CONNECT_BANK:
       let updatedUser = state.user;
       updatedUser.public_key = action.payload

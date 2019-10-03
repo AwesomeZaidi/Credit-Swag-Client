@@ -21,7 +21,8 @@ import {
 } from '../constants/action-types';
 
 // const baseUrl = 'https://creditswagapi.herokuapp.com/';
-const baseUrl = 'https://creditswagapi.herokuapp.com/';
+// const baseUrl = 'https://creditswagapi.herokuapp.com/';
+const baseUrl = 'http://f7cd1008.ngrok.io ';
 
 export const loadData = state => ({
   type: LOAD_DATA,
