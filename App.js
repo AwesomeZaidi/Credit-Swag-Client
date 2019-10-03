@@ -28,14 +28,14 @@ if (__DEV__) {
 import ConnectScreen from './pages/Connect/';
 import DashboardScreen from './pages/Dashboard/';
 import GoalsScreen from './pages/Goals/';
-import AddGoalScreen from './pages/Goals/AddGoal/';
-import SavingGoalScreen from './pages/Goals/SavingGoal/';
+import AddGoalScreen from './pages/Goals/AddGoal';
+import SavingGoalScreen from './pages/Goals/SavingGoal';
 
 import SettingsScreen from './pages/Settings/';
-import NotificationsScreen from './pages/Settings/Notifications/';
+import NotificationsScreen from './pages/Settings/Notifications';
 import ProfileScreen from './pages/Settings/Profile';
 import EnterScreen from  './pages/AuthScreens/Enter/';
-import AddBillScreen from  './pages/Dashboard/AddBill/';
+import AddBillScreen from  './pages/Dashboard/AddBill';
 import AuthLoadingScreen from './pages/AuthScreens/AuthLoading/';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';

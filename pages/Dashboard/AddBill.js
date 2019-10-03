@@ -20,7 +20,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'react-native-material-dropdown';
 // import DatePicker from 'react-native-datepicker';
 // import DatePicker from 'react-native-date-picker';
-import DateTimePicker from "react-native-modal-datetime-picker";
+// import DateTimePicker from "react-native-modal-datetime-picker";
 import moment from 'moment';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 // To add a bill, you fill out this form with a name amount, date  and recurring value.
@@ -37,7 +37,7 @@ class AddBill extends Component {
         nameFocused: false,
         amountFocused: false,
         date: moment(new Date()).format("DD/MM/YYYY"),
-        isDateTimePickerVisible: false
+        // isDateTimePickerVisible: false
     };
     // date:"2019-09-01"
 
@@ -53,20 +53,20 @@ class AddBill extends Component {
         }
     }
 
-    showDateTimePicker = () => {
-        this.setState({ isDateTimePickerVisible: true });
-      };
+    // showDateTimePicker = () => {
+    //     this.setState({ isDateTimePickerVisible: true });
+    //   };
      
-    hideDateTimePicker = (date) => {
-        this.setState({
-            date: date,
-            isDateTimePickerVisible: false
-        });
-    };
+    // hideDateTimePicker = (date) => {
+    //     this.setState({
+    //         date: date,
+    //         isDateTimePickerVisible: false
+    //     });
+    // };
 
-    handleDatePicked = date => {
-        this.hideDateTimePicker(moment(date).format("MM/DD/YYYY"));
-    };
+    // handleDatePicked = date => {
+    //     this.hideDateTimePicker(moment(date).format("MM/DD/YYYY"));
+    // };
 
     onChangeText = (text, feildName) => {
         this.setState({
@@ -146,12 +146,12 @@ class AddBill extends Component {
                                 placeholderTextColor={styles.placeholder}
                             />
                             <View style={styles.addContainerCenter}>
-                                <Button style={common.btnPrimary} title="Change Date" onPress={this.showDateTimePicker} />
+                                {/* <Button style={common.btnPrimary} title="Change Date" onPress={this.showDateTimePicker} />
                                 <DateTimePicker
                                     isVisible={this.state.isDateTimePickerVisible}
                                     onConfirm={this.handleDatePicked}
                                     onCancel={this.hideDateTimePicker}
-                                />
+                                /> */}
                             </View>
                             <Text style={styles.dateText}>{String(this.state.date)}</Text>
                             <View style={styles.addContainerCenter}>
