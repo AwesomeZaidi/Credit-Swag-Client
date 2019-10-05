@@ -39,5 +39,13 @@ export default StyleSheet.create({
     currentAmount: {
         color: green,
         fontSize: 18
+    },
+    green: {
+        color: 'green',
+        fontSize: 18
+    },
+    red: {
+        color: 'red',
+        fontSize: 18
     }
 })
