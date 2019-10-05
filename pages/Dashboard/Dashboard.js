@@ -25,7 +25,6 @@ import  ModalWrapper from 'react-native-modal-wrapper';
 import common from '../styles/common.style';
 import styles from './DashboardStyles';
 
-
 // ----------------------------------------------------------------------------------
 // Dashboard Component
 // ----------------------------------------------------------------------------------
@@ -57,7 +56,10 @@ const Dashboard = (props) => {
         setBalanceGraphData(props.balanceGraphData)
     }, [props.balanceGraphData]);
 
-    const getIcon = (category) => {
+    const getIcon = (name, category) => {
+        if (name == 'Lyft') {
+            return <Text style={{fontSize: 26}}>🚘</Text>
+        }
         switch(category) {
             case('Payment'):
                 return <Text style={{fontSize: 26}}>💰</Text>
@@ -90,7 +92,7 @@ const Dashboard = (props) => {
     }
 
     const showBillModal =(bill) => {
-        setModalOpen(modalOpen)
+        setModalOpen(!modalOpen)
         setBillName(bill.name)
         setBillAmount(bill.amount)
         setBillDate(bill.date)
@@ -206,15 +208,21 @@ const Dashboard = (props) => {
                                     <LinearGradient
                                         colors={['#C35EBF', '#9861D9', '#7662EA']}
                                         style={{ padding: 4, alignItems: 'center', borderRadius: 10, marginRight: 12, justifyContent: 'center', alignSelf: 'center' }}>
-                                        {getIcon(transaction.category[0])}
+                                        {getIcon(transaction.name, transaction.category[0])}
                                     </LinearGradient> 
                                     <View>
                                         <Text style={styles.itemCat}>{transaction.category[0]}</Text>
                                         <Text style={styles.itemDate}>{transaction.date}</Text>
                                     </View>
                                 </View>
-                                <Text style={ Math.sign(transaction.amount)  == '-1' ? styles.red : styles.green }>
-                                    ${transaction.amount}
+                                <Text style={ Math.sign(transaction.amount) == '-1' ? styles.green : styles.red }>
+                                    ${
+                                        Math.sign(transaction.amount) == '-1'
+                                        ?
+                                            String((transaction.amount)).substring(1)
+                                        :
+                                            `-${transaction.amount}`
+                                        }
                                 </Text>
                             </View>
                         )
