@@ -107,6 +107,9 @@ class AddBill extends Component {
             { value: 'Food and Drink' },
             { value: 'School' },
             { value: 'Other' },
+            { value: 'Service' },
+            { value: 'Transfer' },
+            { value: 'Shops' }
         ];
 
         return (
