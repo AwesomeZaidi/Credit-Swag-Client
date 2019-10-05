@@ -58,7 +58,8 @@ class Goals extends Component {
                                         <Text style={styles.goalName}>{goal.name}</Text>
                                         <Text style={common.h1_primary}>{goal.limit}</Text>
                                         {/* Need too make a fetch call to update this value. */}
-                                        <Text style={styles.currentAmount}>Spent: {goal.health}</Text>
+                                        {/* here we need to do a fetch call to get all the new goals... this page is kind of stale with what we add into AsyncStorage atm. */}
+                                        <Text style={goal.limit - goal.health >= 0 ? styles.green : styles.red}>Spent: ${(goal.limit - goal.health).toFixed(2)}</Text>
                                     </View>
                                 </TouchableHighlight>
                             )
