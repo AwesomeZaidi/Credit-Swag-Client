@@ -47,7 +47,13 @@ const SavingGoal = (props) => {
             <View>
                 <Text style={[common.text_label_gray, common.pushOffUp, styles.header]}>{goal.name}</Text>
                 <Text style={[common.h1_primary, common.pushOffUp, styles.header]}>${goal.limit}</Text>
-                <Text style={ goal.health >= 0 ? [common.text_label_green, styles.header] : [common.text_label_red, styles.header]}>Saved ${goal.health}</Text>
+                {
+                    goal.limit - goal.health >= 0 ?
+                        <Text style={[common.text_label_green, styles.header]}>Saved ${(goal.limit - goal.health).toFixed(2)}</Text>
+                    :
+                    <Text style={[common.text_label_red, styles.header]}>DOWN ${(goal.limit - goal.health).toFixed(2)}</Text>
+                    
+                }
             </View>
 
             <Text style={[common.h1_primary, common.pushOffUp, styles.header, common.pushOffDown]}>Summary</Text>
