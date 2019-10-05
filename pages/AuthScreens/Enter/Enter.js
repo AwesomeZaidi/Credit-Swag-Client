@@ -47,7 +47,7 @@ const Enter = (props) => {
     const [showError, setShowError] = useState(false);
     const [loginPressed, setLoginPressed] = useState(false);
     const [signupPressed, setSignupPressed] = useState(false);
-
+    const [validationError, setValidationError] = useState('')
     useEffect(() => {
         if (!props.user == false) {       
             return props.navigation.navigate('App')
@@ -65,6 +65,15 @@ const Enter = (props) => {
     handleSubmit = async (type) => {
         if (type === 'signup') {
             if (!signupPressed) {
+                if (email.length < 1 || email.indexOf('@') === -1 && password.length < 4) {
+                    return setValidationError('Please check fields. Password must be stronger.')
+                }
+                if (email.length < 1 || email.indexOf('@') === -1) {
+                    return setValidationError('Please check email.')
+                }
+                if (password.length < 4) {
+                    return setValidationError('Password must be stronger.')
+                }
                 setSignupPressed(true);
                 // Step 1: Notifications permissions.
                 const { status: existingStatus } = await Permissions.getAsync(
@@ -93,11 +102,12 @@ const Enter = (props) => {
                 let stateData = await AsyncStorage.getItem('CREDIT_SWAG_STATE');  
                 stateData = JSON.parse(stateData);
                 setSignupPressed(false);
-                stateData.error == true
-                    ?
-                        setShowError(true)
-                    :
-                        props.navigation.navigate('Connect')
+                 if (stateData.error == true) {
+                    setShowError(true)
+                    setValidationError('')
+                 } else {
+                    props.navigation.navigate('Connect')
+                 }
             } else {
                 setSignupPressed(false);
                 // Step 1: Notifications permissions.
@@ -134,6 +144,15 @@ const Enter = (props) => {
                         props.navigation.navigate('Connect')
             }
         } else if (type === 'login') {
+            if (email.length < 1 || email.indexOf('@') === -1 && password.length < 4) {
+                return setValidationError('Please check fields. Password must be stronger.')
+            }
+            if (email.length < 1 || email.indexOf('@') === -1) {
+                return setValidationError('Please check email.')
+            }
+            if (password.length < 4) {
+                return setValidationError('Password must be stronger.')
+            }
             if (!loginPressed) {
                 setLoginPressed(true);
                 await props.logIn({email, password});
@@ -279,6 +298,7 @@ const Enter = (props) => {
                                     />
                                 </TouchableOpacity>
                             </View>
+                            <Text style={common.errorMsg}>{validationError}</Text>
                             {/* <View style={[common.centerVerticalElements, common.mw]}>
                                 <Text style={[common.text_sm, common.graytxt]}>
                                 Forgot Password.
