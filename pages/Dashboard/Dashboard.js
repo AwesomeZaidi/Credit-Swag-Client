@@ -25,6 +25,7 @@ import  ModalWrapper from 'react-native-modal-wrapper';
 import common from '../styles/common.style';
 import styles from './DashboardStyles';
 
+
 // ----------------------------------------------------------------------------------
 // Dashboard Component
 // ----------------------------------------------------------------------------------
@@ -57,9 +58,6 @@ const Dashboard = (props) => {
     }, [props.balanceGraphData]);
 
     const getIcon = (name, category) => {
-        if (name == 'Lyft') {
-            return <Text style={{fontSize: 26}}>🚘</Text>
-        }
         switch(category) {
             case('Payment'):
                 return <Text style={{fontSize: 26}}>💰</Text>
@@ -86,6 +84,12 @@ const Dashboard = (props) => {
                 return <Text style={{fontSize: 36}}>🎓</Text>
             case('Housing'):
                 return <Text style={{fontSize: 36}}>🏠</Text>
+            case('Service'):
+                return <Text style={{fontSize: 36}}>💻</Text>
+            case('Shops'):
+                return <Text style={{fontSize: 36}}>🛍</Text>
+            case('Transfer'):
+                return <Text style={{fontSize: 36}}>💸</Text>
             default:
                 return <Text style={{fontSize: 36}}>🤷‍</Text>
         }
